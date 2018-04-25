@@ -16,8 +16,21 @@ class CmdbListAll(LoginRequiredMixin,ListView):
     paginate_by = settings.DISPLAY_PER_PAGE
     model = cmdb
     context_object_name = "cmdb_list"
-    queryset = cmdb.objects.all()
     ordering = ("id")
+
+    def get_queryset(self):
+        if self.request.GET.get('name'):
+            query = self.request.GET.get('name', None)
+            queryset =super().get_queryset().filter(
+                Q(network_ip=query) | Q(hostname=query) | Q(inner_ip=query) | Q(project=query) | Q(
+                    manager=query)).order_by('-id')
+        else:
+            queryset = super().get_queryset()
+        return queryset
+
+
+
+
 
 class CmdbAdd(LoginRequiredMixin, CreateView):
     """资产增加"""
