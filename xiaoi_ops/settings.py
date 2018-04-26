@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'index',
     'cmdb',
     'bootstrap3',
-    "pfdb"
+    "pfdb",
+    "gzdb",
 ]
 
 MIDDLEWARE = [

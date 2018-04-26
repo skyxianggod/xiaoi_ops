@@ -1,7 +1,6 @@
 {% extends "base.html" %}
 {% load  static %}
 {% block header-css %}
-    <link href="{% static 'css/plugins/ztree/awesomeStyle/awesome.css' %}" rel="stylesheet">
     <style type="text/css">
 
 
@@ -32,7 +31,7 @@
 
 {% endblock %}
 
-{% block  title %}资产信息{% endblock %}
+{% block  title %}固定资产信息{% endblock %}
 
 
 
@@ -107,12 +106,12 @@
                             <form id="cha" class="form-horizontal" action="{% url 'cmdb:cmdb_list' %}" method="GET">
                                 {% csrf_token %}
                                 <div class="col-md-2"><input type="text" class="form-control" name="name"
-                                                             placeholder="主机名、IP、负责人" required></div>
+                                                             placeholder="使用人 资产编号" required></div>
 
                                 <button class="btn btn-sm btn-primary" type="submit">查询</button>
 
 
-                                <a href="{% url    'cmdb:cmdb_add' %}" class="btn btn-sm btn-primary ">
+                                <a href="{% url  'cmdb:cmdb_add' %}" class=" btn btn-sm btn-primary ">
                                     添加</a>
 
 
@@ -126,28 +125,29 @@
                                     <thead>
                                     <tr>
                                         <th width="20"><input type="checkbox" id="CheckedAll"></th>
-                                        <th>主机名</th>
-                                        <th>外网IP | 内网IP</th>
-                                        <th>机器型号 | 机柜</th>
-                                        <th>负责人</th>
-                                        <th>项目</th>
+                                        <th>资产编号</th>
+                                        <th>设备类型</th>
+                                        <th>设备型号</th>
+                                        <th>资产地点</th>
+                                        <th>资产状态</th>
                                         <th>操作</th>
                                     </tr>
                                     </thead>
                                     <tbody>
 
-                                    {% for   row   in   cmdb_list %}
+                                    {% for   row   in   gzdb_list %}
 
                                         <tr class="gradeA" id="{{ row.id }}">
                                             <td><input type="checkbox" value="{{ row.id }}" name="id"></td>
                                             <td class="center">
-                                                <a href="{% url "cmdb:cmdb_detail" pk=row.id %}">{{ row.hostname }}</a>
+                                                <a href="{% url "cmdb:cmdb_detail" pk=row.id %}">{{ row.id }}</a>
                                             </td>
-                                            <td class="center">{{ row.network_ip }} | {{ row.inner_ip }}</td>
-                                            <td class="center">{{ row.platform_size }} | {{ row.region }}</td>
-                                            <td class="center">{{ row.manager }}</td>
-                                            <td class="center">{{ row.project }}</td>
-                                            <td><a class="btn btn-primary  btn-xs " href="{% url "cmdb:cmdb_update" pk=row.id %}">编辑</a>
+                                            <td class="center">{{ row.type }}</td>
+                                            <td class="center">{{ row.type_size }}</td>
+                                            <td class="center">{{ row.addr }}</td>
+                                            <td class="center">{{ row.stat }}</td>
+                                            <td><a class="btn btn-primary  btn-xs "
+                                                   href="{% url "cmdb:cmdb_update" pk=row.id %}">编辑</a>
                                                 <a class="btn btn-danger  btn-xs  cmdb_del">删除</a>
                                             </td>
                                             </td>
@@ -157,61 +157,61 @@
 
                                 </table>
                                 <button class="btn btn-sm btn-primary" type="submit">导出</button>
-                                <a href="{% url "cmdb:cmdb_export"  %}"class="btn btn-sm btn-primary ">导出全部</a>
+                                <a href="{% url "cmdb:cmdb_export" %}" class="btn btn-sm btn-primary ">导出全部</a>
                                 <a class="btn btn-sm btn-danger  cmdb_all_del"
                                 >批量删除
                                 </a>
                                 <div>
 
 
-
-                                        <ul class="pagination">
-                                            <li><a href="{% url "cmdb:cmdb_list" %}?page=1">首页 </a></li>
-                                            {% if  page_obj.has_previous %}
-                                                <li>
-                                                    <a href="{% url "cmdb:cmdb_list" %}?page={{ page_obj.previous_page_number }}&{{ search_data }}">
-                                                        上一页 </a></li>
-                                            {% else %}
-                                                <li class="disabled"><a> 上一页 </a></li>
-                                            {% endif %}
-
-                                            {% for p in paginator.page_range %}
-                                                {% if  search_data %}  <!-- 判断是否是搜索分页-->
-                                                    {% if p == page_obj.number %}
-                                                        <li class="active"><a
-                                                                href="{% url "cmdb:cmdb_list" %}?page={{ p }}&{{ search_data }}"> {{ p }} </a>
-                                                        </li>
-                                                    {% else %}
-                                                        <li>
-                                                            <a href="{% url "cmdb:cmdb_list" %}?page={{ p }}&{{ search_data }}"> {{ p }} </a>
-                                                        </li>
-                                                    {% endif %}
-                                                {% else %}
-                                                    {% if p == page_obj.number %}
-                                                        <li class="active"><a
-                                                                href="{% url "cmdb:cmdb_list" %}?page={{ p }}"> {{ p }} </a>
-                                                        </li>
-                                                    {% else %}
-                                                        <li>
-                                                            <a href="{% url "cmdb:cmdb_list" %}?page={{ p }}"> {{ p }} </a>
-                                                        </li>
-                                                    {% endif %}
-                                                {% endif %}
-                                            {% endfor %}
-
-
-                                            {% if  page_obj.has_next %}
-                                                <li>
-                                                    <a href="{% url "cmdb:cmdb_list" %}?page={{ page_obj.next_page_number }}&{{ search_data }}">
-                                                        下一页 </a></li>
-                                            {% endif %}
+                                    <ul class="pagination">
+                                        <li><a href="{% url "cmdb:cmdb_list" %}?page=1">首页 </a></li>
+                                        {% if  page_obj.has_previous %}
                                             <li>
-                                                <a href="{% url "cmdb:cmdb_list" %}?page={{ page_obj.paginator.num_pages }}">尾页 </a>
-                                            </li>
-                                            <li><span style="color: #0a0a0a">总: &nbsp;{{ page_obj.paginator.num_pages }} 页 </span>
-                                            </li>
+                                                <a href="{% url "cmdb:cmdb_list" %}?page={{ page_obj.previous_page_number }}&{{ search_data }}">
+                                                    上一页 </a></li>
+                                        {% else %}
+                                            <li class="disabled"><a> 上一页 </a></li>
+                                        {% endif %}
 
-                                        </ul>
+                                        {% for p in paginator.page_range %}
+                                            {% if  search_data %}  <!-- 判断是否是搜索分页-->
+                                                {% if p == page_obj.number %}
+                                                    <li class="active"><a
+                                                            href="{% url "cmdb:cmdb_list" %}?page={{ p }}&{{ search_data }}"> {{ p }} </a>
+                                                    </li>
+                                                {% else %}
+                                                    <li>
+                                                        <a href="{% url "cmdb:cmdb_list" %}?page={{ p }}&{{ search_data }}"> {{ p }} </a>
+                                                    </li>
+                                                {% endif %}
+                                            {% else %}
+                                                {% if p == page_obj.number %}
+                                                    <li class="active"><a
+                                                            href="{% url "cmdb:cmdb_list" %}?page={{ p }}"> {{ p }} </a>
+                                                    </li>
+                                                {% else %}
+                                                    <li>
+                                                        <a href="{% url "cmdb:cmdb_list" %}?page={{ p }}"> {{ p }} </a>
+                                                    </li>
+                                                {% endif %}
+                                            {% endif %}
+                                        {% endfor %}
+
+
+                                        {% if  page_obj.has_next %}
+                                            <li>
+                                                <a href="{% url "cmdb:cmdb_list" %}?page={{ page_obj.next_page_number }}&{{ search_data }}">
+                                                    下一页 </a></li>
+                                        {% endif %}
+                                        <li>
+                                            <a href="{% url "cmdb:cmdb_list" %}?page={{ page_obj.paginator.num_pages }}">尾页 </a>
+                                        </li>
+                                        <li><span
+                                                style="color: #0a0a0a">总: &nbsp;{{ page_obj.paginator.num_pages }} 页 </span>
+                                        </li>
+
+                                    </ul>
                                     </center>
                                 </div> <!--页码 -->
 
@@ -263,7 +263,7 @@
                 };
 
                 $.ajax({
-                    url: '{% url  'cmdb:cmdb_ztree' %}',
+                    url: '{}',
                     type: 'get',
                     data: '',
                     dataType: 'json',
@@ -282,10 +282,10 @@
             function zTreeOnClick(treeNode) {
 
                 if (treeNode.id == 1111) {
-                    window.location.href = '/cmdb/cmdb.html'
+                    window.location.href = '/cmdb/cmdb_list.html'
                 }
                 else {
-                    window.location.href = '/cmdb/cmdb.html?name=' + treeNode.name
+                    window.location.href = '/cmdb/cmdb_list.html?name=' + treeNode.name
                 }
             }
 

@@ -15,8 +15,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path,include
+
 from index.views import login_view,index
-from cmdb import views
 
 urlpatterns = [
     path('admin/', admin.site.urls,name='admin'),
@@ -25,5 +25,5 @@ urlpatterns = [
     path('login.html',login_view),
     path('cmdb/', include('cmdb.urls', namespace="cmdb", ), ),
     path('pfdb/',include('pfdb.urls',namespace="pfdb")),
-
+    path('gzdb/', include('gzdb.urls', namespace="gzdb")),
 ]

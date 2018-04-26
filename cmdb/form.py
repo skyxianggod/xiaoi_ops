@@ -1,5 +1,7 @@
 from    django import forms
+
 from    cmdb.models import cmdb
+
 
 class CmdbForm(forms.ModelForm):
 

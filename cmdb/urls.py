@@ -1,4 +1,5 @@
 from django.urls import path
+
 from cmdb import views
 
 urlpatterns = [
@@ -9,6 +10,7 @@ urlpatterns = [
     path('cmdb-detail-<int:pk>.html',views.CmdbDetail.as_view(),name='cmdb_detail'),
     path('cmdb-export.html',views.CmdbExport.as_view(),name='cmdb_export'),
     path('cmdb-import.html',views.CmdbImport,name='cmdb_import'),
+    path('cmdb-ztree.html', views.CmdbZtree, name='cmdb_ztree'),
     ]
 
 app_name="cmdb"

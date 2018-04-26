@@ -1,15 +1,21 @@
-from django.shortcuts import render,HttpResponse
-from django.views.generic import TemplateView, ListView, View, CreateView, UpdateView, DetailView
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.decorators import login_required
-from xiaoi_ops import settings
-from cmdb.models import cmdb
-from django.urls import reverse_lazy
-from .form import CmdbForm,FileForm
-import json,csv,codecs,chardet
+import chardet
+import codecs
+import csv
+import json
 from io import StringIO
 
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
+from django.shortcuts import render,HttpResponse
+from django.urls import reverse_lazy
+from django.views.generic import ListView, View, CreateView, UpdateView, DetailView
+
+from cmdb.models import cmdb
+from xiaoi_ops import settings
+from .form import CmdbForm,FileForm
+
+
 # Create your views here.
 class CmdbListAll(LoginRequiredMixin,ListView):
     template_name = 'cmdb/cmdb.html'
@@ -22,8 +28,8 @@ class CmdbListAll(LoginRequiredMixin,ListView):
         if self.request.GET.get('name'):
             query = self.request.GET.get('name', None)
             queryset =super().get_queryset().filter(
-                Q(network_ip=query) | Q(hostname=query) | Q(inner_ip=query) | Q(project=query) | Q(
-                    manager=query)).order_by('-id')
+                    Q(network_ip=query) | Q(hostname=query) | Q(inner_ip=query) | Q(project=query) | Q(
+                            manager=query) | Q(region=query)).order_by('-id')
         else:
             queryset = super().get_queryset()
         return queryset
@@ -208,3 +214,17 @@ def CmdbImport(request):
                                                                "msg": data})
 
     return render(request, 'cmdb/cmdb-import.html', {'form': form })
+
+
+def CmdbZtree(request):
+    """
+    获取 区域 资产树 的相关数据
+    :param request:
+    :return:
+    """
+
+    manager = cmdb.objects.values("region").distinct()
+    data = [{"id": "1111", "pId": "0", "name": "机柜"}, ]
+    for i in manager:
+        data.append({"id": i['region'], "pId": "1111", "name": i['region'], "page": "xx.action"}, )
+    return HttpResponse(json.dumps(data), content_type='application/json')
