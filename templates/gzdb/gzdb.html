@@ -111,7 +111,7 @@
                                 <button class="btn btn-sm btn-primary" type="submit">查询</button>
 
 
-                                <a href="{% url  'cmdb:cmdb_add' %}" class=" btn btn-sm btn-primary ">
+                                <a href="{% url  'gzdb:gzdb_add' %}" class=" btn btn-sm btn-primary ">
                                     添加</a>
 
 
@@ -140,14 +140,14 @@
                                         <tr class="gradeA" id="{{ row.id }}">
                                             <td><input type="checkbox" value="{{ row.id }}" name="id"></td>
                                             <td class="center">
-                                                <a href="{% url "cmdb:cmdb_detail" pk=row.id %}">{{ row.id }}</a>
+                                                <a href=".">{{ row.id }}</a>
                                             </td>
                                             <td class="center">{{ row.type }}</td>
                                             <td class="center">{{ row.type_size }}</td>
                                             <td class="center">{{ row.addr }}</td>
                                             <td class="center">{{ row.stat }}</td>
                                             <td><a class="btn btn-primary  btn-xs "
-                                                   href="{% url "cmdb:cmdb_update" pk=row.id %}">编辑</a>
+                                                   href=".">编辑</a>
                                                 <a class="btn btn-danger  btn-xs  cmdb_del">删除</a>
                                             </td>
                                             </td>

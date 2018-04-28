@@ -3,10 +3,10 @@ from    django import forms
 from    gzdb.models import gzdb
 
 
-class CmdbForm(forms.ModelForm):
+class GzdbForm(forms.ModelForm):
     class Meta:
         model = gzdb
-        fields = '__all__'
+        fields = ['type', 'type_size', 'id', 'uid', 'sn', 'stat', 'depart', 'addr', 'user', 'ps', 'history']
         # fields = [
         #     'hostname', 'network_ip', 'inner_ip','system','cpu',
         #     'memory','disk','project','platform','region','manager',
@@ -14,9 +14,9 @@ class CmdbForm(forms.ModelForm):
         #     'platform_size','power','UID','PID','netinfo',
         # ]
 
-        # labels = {
-        #     "network_ip": "外网IP",
-        # }
+        labels = {
+            "type": "类型",
+        }
         # widgets = {
         #     'ps': forms.Textarea(
         #         attrs={'cols': 80, 'rows': 3}),

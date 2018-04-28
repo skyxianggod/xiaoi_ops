@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'bootstrap3',
     "pfdb",
     "gzdb",
+    "base_info",
 ]
 
 MIDDLEWARE = [

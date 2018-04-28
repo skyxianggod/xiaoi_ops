@@ -26,4 +26,5 @@ urlpatterns = [
     path('cmdb/', include('cmdb.urls', namespace="cmdb", ), ),
     path('pfdb/',include('pfdb.urls',namespace="pfdb")),
     path('gzdb/', include('gzdb.urls', namespace="gzdb")),
+    path('base_info/', include('base_info.urls', namespace="base_info")),
 ]

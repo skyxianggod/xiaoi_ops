@@ -52,4 +52,4 @@ class gzdb(models.Model):
         }
 
     def __str__(self):
-        return self.Id
+        return self.id
