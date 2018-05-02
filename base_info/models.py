@@ -3,6 +3,7 @@ from django.db import models
 
 # Create your models here.
 class person(models.Model):
+    uid = models.AutoField()
     id = models.CharField(max_length=24, primary_key=True, blank=False, verbose_name='工号')
     name = models.CharField(max_length=24, blank=False, verbose_name='姓名')
     part = models.CharField(max_length=24, verbose_name='部门')
@@ -37,3 +38,15 @@ class shop(models.Model):
         db_table = "shop"
         verbose_name = "商家信息"
         verbose_name_plural = '商家信息'
+
+
+class platform(models.Model):
+    name = models.CharField(max_length=24, verbose_name='设备类型')
+    size = models.CharField(max_length=24, verbose_name='设备型号')
+
+#
+#
+# class platform_size(models.Model):
+#
+#     name = models.CharField(max_length=24,verbose_name='设备型号')
+#     platform = models.ForeignKey(platform)

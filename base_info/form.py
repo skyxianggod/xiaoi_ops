@@ -2,7 +2,7 @@ import re
 
 from django import forms
 
-from .models import department, person, shop
+from .models import department, person, shop, platform
 
 
 class DepartmentForm(forms.ModelForm):
@@ -33,9 +33,8 @@ class PersonForm(forms.ModelForm):
     #     print(self.a)
     #     person.part['cho']
 
-
-    part = forms.ModelChoiceField(label='部门', queryset=department.objects.all())
-
+    part = forms.ModelChoiceField(label='部门', queryset=department.objects.all(), empty_label="---------",
+                                  help_text='*  必填项目')
     # queue = forms.ModelChoiceField(label=u'队列',queryset=Queue.objects.all())
     class Meta:
         model = person
@@ -59,3 +58,13 @@ class PersonForm(forms.ModelForm):
             return mobile
         else:
             raise forms.ValidationError('手机号码非法', code='invalid mobile')
+
+
+class PlatformForm(forms.ModelForm):
+    class Meta:
+        model = platform
+        fields = '__all__'
+        help_texts = {
+            'name': '*  必填项目',
+            'size': '*  必填项目',
+        }
