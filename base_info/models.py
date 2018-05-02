@@ -3,7 +3,6 @@ from django.db import models
 
 # Create your models here.
 class person(models.Model):
-    uid = models.AutoField()
     id = models.CharField(max_length=24, primary_key=True, blank=False, verbose_name='工号')
     name = models.CharField(max_length=24, blank=False, verbose_name='姓名')
     part = models.CharField(max_length=24, verbose_name='部门')

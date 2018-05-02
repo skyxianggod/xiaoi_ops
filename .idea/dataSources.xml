@@ -7,10 +7,18 @@
       <imported>true</imported>
       <remarks>$PROJECT_DIR$/xiaoi_ops/settings.py</remarks>
       <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
-      <jdbc-url>jdbc:sqlite:D:\work\xiaoi_ops0418\xiaoi_ops\db.sqlite3</jdbc-url>
+      <jdbc-url>jdbc:sqlite:F:\work\0502\xiaoi_ops\db.sqlite3</jdbc-url>
       <explain-plan-config>
         <provider>com.intellij.database.plan.ExplainPlanProvider.NullExplainPlanProvider</provider>
       </explain-plan-config>
+      <libraries>
+        <library>
+          <url>file://$APPLICATION_CONFIG_DIR$/jdbc-drivers/xerial-sqlite-license.txt</url>
+        </library>
+        <library>
+          <url>file://$APPLICATION_CONFIG_DIR$/jdbc-drivers/sqlite-jdbc-3.20.1.1.jar</url>
+        </library>
+      </libraries>
     </data-source>
   </component>
 </project>

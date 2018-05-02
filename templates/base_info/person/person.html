@@ -107,7 +107,7 @@
                                   method="GET">
                                 {% csrf_token %}
                                 <div class="col-md-2"><input type="text" class="form-control" name="name"
-                                                             placeholder="使用人 资产编号" required></div>
+                                                             placeholder="员工编号|姓名" required></div>
 
                                 <button class="btn btn-sm btn-primary" type="submit">查询</button>
 
@@ -365,7 +365,7 @@
                     }, function () {
                         $.ajax({
                             headers: {"X-CSRFToken": '{{ csrf_token }}'},
-                            url: "/cmdb/cmdb-del.html",
+                            url: "/person/person-del.html",
                             type: 'POST',
                             data: $('#del_form_cmdb_all').serialize(),
                             success: function (data) {
