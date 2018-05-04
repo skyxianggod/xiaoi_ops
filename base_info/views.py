@@ -17,7 +17,7 @@ class PersonAdd(LoginRequiredMixin, CreateView):
     model = person
     form_class = PersonForm
     template_name = 'base_info/person/person-add-update.html'
-    success_url = reverse_lazy('base-info:person_list')
+    success_url = reverse_lazy('base_info:person_list')
 
 
 class PersonList(LoginRequiredMixin, ListView):
@@ -74,7 +74,7 @@ class PartAdd(LoginRequiredMixin, CreateView):
     model = department
     form_class = DepartmentForm
     template_name = 'base_info/department/department-add-update.html'
-    success_url = reverse_lazy('base-info:department_list')
+    success_url = reverse_lazy('base_info:part_list')
 
 
 class PartList(LoginRequiredMixin, ListView):
@@ -124,4 +124,54 @@ class PartDel(LoginRequiredMixin, View):
         finally:
             return HttpResponse(json.dumps(ret))
 
-            #商家管理视图
+#商家管理视图
+class ShopAdd(LoginRequiredMixin, CreateView):
+    """增加"""
+    model = shop
+    form_class = ShopForm
+    template_name = 'base_info/shop/shop-add-update.html'
+    success_url = reverse_lazy('base_info:shop_list')
+
+
+class ShopList(LoginRequiredMixin, ListView):
+    model = shop
+    template_name = 'base_info/shop/shop.html'
+    context_object_name = "shop_list"
+    paginate_by = settings.DISPLAY_PER_PAGE
+    ordering = ("id")
+
+
+
+
+class ShopUpdate(LoginRequiredMixin, UpdateView):
+    model = shop
+    success_url = reverse_lazy('base_info:shop_list')
+    form_class = ShopForm
+    template_name = 'base_info/shop/shop-add-update.html'
+
+
+class ShopDel(LoginRequiredMixin, View):
+    model = shop
+
+    def post(self, request):
+        ret = {'status': True, 'error': None}
+        try:
+            if request.POST.get('nid'):
+                id = request.POST.get('nid', None)
+                shop.objects.get(id=id).delete()
+            else:
+                ids = request.POST.getlist('id', None)
+                if len(ids) == 0:
+                    ret['status'] = False
+                    ret['error'] = '请选者删除的条目'
+                else:
+                    idstring = ','.join(ids)
+                    shop.objects.extra(where=['id IN (' + idstring + ')']).delete()
+        except Exception as e:
+            ret['status'] = False
+            ret['error'] = '删除错误'.format(e)
+        finally:
+            return HttpResponse(json.dumps(ret))
+
+
+#设备类型视图
