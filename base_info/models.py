@@ -40,12 +40,19 @@ class shop(models.Model):
 
 
 class platform(models.Model):
-    name = models.CharField(max_length=24, verbose_name='设备类型')
-    size = models.CharField(max_length=24, verbose_name='设备型号')
+    name = models.CharField(max_length=24, verbose_name='设备类型',primary_key=True)
+    class Meta:
+        db_table = "platform"
+        verbose_name = "设备类型"
+        verbose_name_plural = '设备类型'
 
-#
-#
-# class platform_size(models.Model):
-#
-#     name = models.CharField(max_length=24,verbose_name='设备型号')
-#     platform = models.ForeignKey(platform)
+
+class platform_size(models.Model):
+
+    name = models.CharField(max_length=24,verbose_name='设备型号')
+    platform = models.ForeignKey(to=platform,to_field='name',on_delete=models.SET_NULL,null=True, blank=True)
+    class Meta:
+        db_table = "platform_size"
+        verbose_name = "设备型号"
+        verbose_name_plural = '设备型号'
+

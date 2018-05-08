@@ -1,5 +1,5 @@
 import json
-
+from django.shortcuts import render
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponse
 from django.urls import reverse_lazy
@@ -8,7 +8,7 @@ from django.views.generic import CreateView, ListView, UpdateView, View
 from xiaoi_ops import settings
 from .form import *
 from django.db.models import Q
-
+from .models import *
 
 # 人员管理视图
 # Create your views here.
@@ -175,3 +175,32 @@ class ShopDel(LoginRequiredMixin, View):
 
 
 #设备类型视图
+#
+class PlatformList(ListView):
+    template_name = 'base_info/platform/platform.html'
+    context_object_name = "dic_list"
+    paginate_by = settings.DISPLAY_PER_PAGE
+
+    def get_queryset(self):
+
+        dic_list=[]
+        P = platform.objects.all()
+        # S = platform_size.objects.all()
+        for i in P:
+            L = []
+            dic = {}
+            S = platform_size.objects.filter(platform__name=i.name)
+            for x in S:
+                L.append(x.name)
+            dic[i.name] = L
+            dic_list.append(dic)
+        print(dic_list)
+        # return render(request, 'base_info/platform/platform.html', {'dic': dic})
+        return dic_list
+
+
+
+
+
+
+

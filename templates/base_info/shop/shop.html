@@ -86,6 +86,7 @@
                         <div class="table-responsive">
                                 <a href="{% url  'base_info:shop_add' %}" class=" btn btn-sm btn-primary ">
                                     添加</a>
+                            <a class="btn btn-sm btn-danger  cmdb_all_del">批量删除</a>
                             <form id="del_form_cmdb_all" class="form-horizontal  "
                                   action="{% url "cmdb:cmdb_export" %}" method="post">
                                 {% csrf_token %}
@@ -123,11 +124,7 @@
                                     </tbody>
 
                                 </table>
-                                <button class="btn btn-sm btn-primary" type="submit">导出</button>
-                                <a href="{% url "cmdb:cmdb_export" %}" class="btn btn-sm btn-primary ">导出全部</a>
-                                <a class="btn btn-sm btn-danger  cmdb_all_del"
-                                >批量删除
-                                </a>
+
                                 <div>
 
 
