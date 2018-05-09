@@ -18,7 +18,8 @@ urlpatterns = [
     path('shop-add-update-<pk>.html', views.ShopUpdate.as_view(), name='shop_update'),
 
     path('platform.html', views.PlatformList.as_view(), name='platform_list'),
-    # path('platform-add-update.html', views.PlatformAdd.as_view(), name='platform_add'),
+    path('platform-add-update.html', views.PlatformAdd.as_view(), name='platform_add'),
+    path('platformsize-add-update.html', views.Platform_sizeAdd.as_view(), name='platformsize_add'),
     # path('platform-del.html', views.PlatformDel.as_view(), name='platform_del'),
     # path('platform-add-update-<pk>.html', views.PlatformUpdate.as_view(), name='platform_update'),
 

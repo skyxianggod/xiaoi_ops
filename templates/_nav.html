@@ -27,6 +27,22 @@
 
             </li>
             <li>
+                <a href="#"><i class="fa fa-inbox"></i> <span class="nav-label">基础信息</span>
+                    <span class="fa arrow"> </span></a>
+                <ul class="nav nav-second-level">
+                    <li><a href="{% url "base_info:person_list" %}">员工管理</a></li>
+                </ul>
+                <ul class="nav nav-second-level">
+                    <li><a href="{% url "base_info:part_list" %}">部门管理</a></li>
+                </ul>
+                <ul class="nav nav-second-level">
+                    <li><a href="{% url "base_info:shop_list" %}">商家管理</a></li>
+                </ul>
+                <ul class="nav nav-second-level">
+                    <li><a href="{% url "base_info:platform_list" %}">设备管理</a></li>
+                </ul>
+            </li>
+            <li>
                 <a href="#"><i class="fa fa-inbox"></i> <span class="nav-label">资产管理</span>
                     <span class="fa arrow"> </span></a>
                 <ul class="nav nav-second-level">
@@ -47,22 +63,7 @@
             </li>
 
 
-            <li>
-                <a href="#"><i class="fa fa-inbox"></i> <span class="nav-label">基础信息</span>
-                    <span class="fa arrow"> </span></a>
-                <ul class="nav nav-second-level">
-                    <li><a href="{% url "base_info:person_list" %}">员工管理</a></li>
-                </ul>
-                <ul class="nav nav-second-level">
-                    <li><a href="{% url "base_info:part_list" %}">部门管理</a></li>
-                </ul>
-                <ul class="nav nav-second-level">
-                    <li><a href="{% url "base_info:shop_list" %}">商家管理</a></li>
-                </ul>
-                <ul class="nav nav-second-level">
-                    <li><a href="{% url "gzdb:gzdb_list" %}">设备管理</a></li>
-                </ul>
-            </li>
+
 
             <li>
                 <a href="#"><i class="fa fa-inbox"></i> <span class="nav-label">管理</span>

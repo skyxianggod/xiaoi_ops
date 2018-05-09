@@ -46,13 +46,17 @@ class platform(models.Model):
         verbose_name = "设备类型"
         verbose_name_plural = '设备类型'
 
+    def __str__(self):
+        return self.name
+
 
 class platform_size(models.Model):
 
     name = models.CharField(max_length=24,verbose_name='设备型号')
-    platform = models.ForeignKey(to=platform,to_field='name',on_delete=models.SET_NULL,null=True, blank=True)
+    platform = models.ForeignKey(verbose_name="设备型号",to=platform,to_field='name',on_delete=models.CASCADE)
     class Meta:
         db_table = "platform_size"
         verbose_name = "设备型号"
         verbose_name_plural = '设备型号'
+
 

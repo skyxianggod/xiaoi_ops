@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block  title %}部门{% endblock %}
+{% block  title %}设备{% endblock %}
 {% block header-css %}
     {% load bootstrap3 %}
 {% endblock %}
@@ -9,16 +9,16 @@
 
     <div class="row wrapper border-bottom white-bg page-heading">
         <div class="col-lg-10">
-            <h2>部门</h2>
+            <h2>设备</h2>
             <ol class="breadcrumb">
                 <li>
                     <a href="/index.html">主页</a>
                 </li>
                 <li>
-                    <a href="cmdb.html">部门管理</a>
+                    <a href="cmdb.html">设备管理</a>
                 </li>
                 <li class="active">
-                    <strong>部门</strong>
+                    <strong>设备</strong>
                 </li>
             </ol>
         </div>
@@ -32,7 +32,7 @@
         <div class="col-lg-12">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
-                    <h5>部门</h5>
+                    <h5>设备</h5>
                     <div class="ibox-tools">
                         <a class="collapse-link">
                             <i class="fa fa-chevron-up"></i>
@@ -64,7 +64,7 @@
                         <div class="form-group">
                             <div class="col-sm-10 col-sm-offset-0">
                                 <h3>基本信息</h3>
-                                {% bootstrap_field form.id layout="horizontal" %}
+                                {% bootstrap_field form.platform layout="horizontal" %}
                                 {% bootstrap_field form.name layout="horizontal" %}
                             </div>
                         </div>
@@ -76,10 +76,12 @@
 
                                 {% bootstrap_button "保存" button_type="submit" button_class="btn-primary" %}
 
-                                <a class="btn btn-default" href="{% url 'base_info:part_list' %}">取消</a>
+                                <a class="btn btn-default" href="{% url 'base_info:platform_list' %}">取消</a>
                             </div>
                         </div>
                     </form>
+
+
 
 
                 </div>

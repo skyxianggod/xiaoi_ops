@@ -2,7 +2,7 @@ import re
 
 from django import forms
 
-from .models import department, person, shop, platform
+from .models import department, person, shop, platform,platform_size
 
 
 class DepartmentForm(forms.ModelForm):
@@ -67,4 +67,13 @@ class PlatformForm(forms.ModelForm):
         help_texts = {
             'name': '*  必填项目',
             'size': '*  必填项目',
+        }
+
+class Platform_sizeForm(forms.ModelForm):
+
+    class Meta:
+        model = platform_size
+        fields = '__all__'
+        help_texts = {
+            'name': '*  必填项目',
         }

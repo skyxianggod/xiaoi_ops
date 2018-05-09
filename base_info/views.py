@@ -198,6 +198,19 @@ class PlatformList(ListView):
         # return render(request, 'base_info/platform/platform.html', {'dic': dic})
         return dic_list
 
+class PlatformAdd(LoginRequiredMixin, CreateView):
+    """增加"""
+    model = platform
+    form_class = PlatformForm
+    template_name = 'base_info/platform/platform-add-update.html'
+    success_url = reverse_lazy('base_info:platform_list')
+
+class Platform_sizeAdd(LoginRequiredMixin, CreateView):
+    """增加"""
+    model = platform_size
+    form_class = Platform_sizeForm
+    template_name = 'base_info/platform/platformsize-add-update.html'
+    success_url = reverse_lazy('base_info:platform_list')
 
 
 
