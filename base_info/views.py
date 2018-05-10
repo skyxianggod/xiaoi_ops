@@ -67,7 +67,18 @@ class PersonDel(LoginRequiredMixin, View):
         finally:
             return HttpResponse(json.dumps(ret))
 
+def PersonZtree(request):
+    """
+    获取 区域 资产树 的相关数据
+    :param request:
+    :return:
+    """
 
+    manager = person.objects.values("part").distinct()
+    data = [{"id": "1111", "pId": "0", "name": "部门"}, ]
+    for i in manager:
+        data.append({"id": i['part'], "pId": "1111", "name": i['part']}, )
+    return HttpResponse(json.dumps(data), content_type='application/json')
 # 部门管理视图
 class PartAdd(LoginRequiredMixin, CreateView):
     """增加"""

@@ -7,6 +7,7 @@ urlpatterns = [
     path('person-add-update.html', views.PersonAdd.as_view(), name='person_add'),
     path('person-del.html', views.PersonDel.as_view(), name='person_del'),
     path('person-add-update-<pk>.html', views.PersonUpdate.as_view(), name='person_update'),
+    path('person-ztree.html', views.PersonZtree, name='person_ztree'),
     path('department.html', views.PartList.as_view(), name='part_list'),
     path('department-add-update.html', views.PartAdd.as_view(), name='part_add'),
     path('department-del.html', views.PartDel.as_view(), name='part_del'),
