@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component name="dataSourceStorage">
-  <data-source name="Sqlite (Xerial) - db.sqlite3" uuid="2fc8c929-1bcb-4f1a-8b28-bc7b796e314e">
+  <data-source name="Sqlite (Xerial) - db.sqlite3" uuid="3c04fc89-8cfe-4daa-8d99-cf3d5afa0722">
     <database-info product="SQLite" version="3.20.1" jdbc-version="2.1" driver-name="SQLite JDBC" driver-version="3.20.1.1"/>
     <case-sensitivity plain-identifiers="mixed" quoted-identifiers="mixed"/>
     <schema name="" catalog=""/>
@@ -151,9 +151,11 @@
     <table name="person_info" schema="" catalog="" type="TABLE">
       <column name="id" sqlType="VARCHAR(24)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
       <column name="name" sqlType="VARCHAR(24)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
-      <column name="part" sqlType="VARCHAR(24)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
       <column name="mobile" sqlType="VARCHAR(11)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="part_id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
       <primary-key columns="id"/>
+      <foreign-key name="#FAKE_person_info_1" columns="part_id" ref-table="department" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
+      <index name="person_info_part_id_72db343c" unique="true" columns="part_id"/>
     </table>
     <table name="pfdb" schema="" catalog="" type="TABLE">
       <column name="id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4" autoIncrement="true"/>
@@ -162,15 +164,24 @@
       <primary-key columns="id"/>
     </table>
     <table name="platform" schema="" catalog="" type="TABLE">
+      <column name="id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4" autoIncrement="true"/>
       <column name="name" sqlType="VARCHAR(24)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
-      <primary-key columns="name"/>
+      <primary-key columns="id"/>
+    </table>
+    <table name="platform_asstes" schema="" catalog="" type="TABLE">
+      <column name="id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="name" sqlType="VARCHAR(24)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="platform_size_id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <primary-key columns="id"/>
+      <foreign-key name="#FAKE_platform_asstes_1" columns="platform_size_id" ref-table="platform_size" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
+      <index name="platform_asstes_platform_size_id_061582ab" unique="true" columns="platform_size_id"/>
     </table>
     <table name="platform_size" schema="" catalog="" type="TABLE">
       <column name="id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4" autoIncrement="true"/>
       <column name="name" sqlType="VARCHAR(24)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
-      <column name="platform_id" sqlType="VARCHAR(24)" precision="0" scale="-1" nullable="true" jdbcType="12"/>
+      <column name="platform_id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
       <primary-key columns="id"/>
-      <foreign-key name="#FAKE_platform_size_1" columns="platform_id" ref-table="platform" ref-schema="" ref-catalog="" ref-columns="name" update-rule="3" delete-rule="3" deferrability="1"/>
+      <foreign-key name="#FAKE_platform_size_1" columns="platform_id" ref-table="platform" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
       <index name="platform_size_platform_id_0b6618f3" unique="true" columns="platform_id"/>
     </table>
     <table name="shop" schema="" catalog="" type="TABLE">

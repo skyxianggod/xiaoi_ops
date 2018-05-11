@@ -111,7 +111,7 @@
                                             <td><input type="checkbox" value="{{ row.id }}" name="id"></td>
                                             <td class="center">{{ row.platfrom_name}}</td>
                                             <td class="center">
-                                                <a class="btn btn-primary  btn-xs " href="{{ row.platfrom_url}}">{{ row.platfrom_url}}</a>
+                                                <a class="btn btn-primary  btn-xs " href="{{ row.platfrom_url }}" target=_blank>{{ row.platfrom_url}}</a>
                                                 </td>
                                             <td><a class="btn btn-primary  btn-xs " href="{% url  "pfdb:pfdb_update" pk=row.id %}" >编辑</a>
                                                 <a class="btn btn-danger  btn-xs  pfdb_del">删除</a>

@@ -5,7 +5,7 @@ from django.db import models
 class person(models.Model):
     id = models.CharField(max_length=24, primary_key=True, blank=False, verbose_name='工号')
     name = models.CharField(max_length=24, blank=False, verbose_name='姓名')
-    part = models.CharField(max_length=24, verbose_name='部门')
+    part = models.ForeignKey(to='department',to_field='id',on_delete=models.CASCADE,max_length=24, verbose_name='部门')
     mobile = models.CharField(max_length=11, verbose_name='手机号码')
 
     class Meta:
@@ -40,7 +40,8 @@ class shop(models.Model):
 
 
 class platform(models.Model):
-    name = models.CharField(max_length=24, verbose_name='设备类型',primary_key=True)
+    id =models.AutoField(primary_key=True, blank=False, verbose_name='id')
+    name = models.CharField(max_length=24, verbose_name='设备类型')
     class Meta:
         db_table = "platform"
         verbose_name = "设备类型"
@@ -53,10 +54,23 @@ class platform(models.Model):
 class platform_size(models.Model):
 
     name = models.CharField(max_length=24,verbose_name='设备型号')
-    platform = models.ForeignKey(verbose_name="设备型号",to=platform,to_field='name',on_delete=models.CASCADE)
+    platform = models.ForeignKey(verbose_name="设备型号",to=platform,to_field='id',on_delete=models.CASCADE)
     class Meta:
         db_table = "platform_size"
         verbose_name = "设备型号"
         verbose_name_plural = '设备型号'
+    def __str__(self):
+        return self.name
+
+
+
+class platform_asstes(models.Model):
+
+    name = models.CharField(max_length=24,verbose_name='设备配置')
+    platform_size = models.ForeignKey(verbose_name="设备配置",to=platform_size,to_field='id',on_delete=models.CASCADE)
+    class Meta:
+        db_table = "platform_asstes"
+        verbose_name = "设备配置"
+        verbose_name_plural = '设备配置'
 
 

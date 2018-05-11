@@ -223,6 +223,40 @@ class Platform_sizeAdd(LoginRequiredMixin, CreateView):
     template_name = 'base_info/platform/platformsize-add-update.html'
     success_url = reverse_lazy('base_info:platform_list')
 
+class Platform_assetsAdd(LoginRequiredMixin, CreateView):
+    """增加"""
+    model = platform_asstes
+    form_class = Platform_asstesForm
+    template_name = 'base_info/platform/platform_asstes-add-update.html'
+    success_url = reverse_lazy('base_info:platformasstes_list')
+    context_object_name = 'name'
+
+    def get_context_data(self, **kwargs):
+        print(kwargs)
+        context = super().get_context_data(**kwargs)
+        print(context)
+
+        search_data=self.request.GET.get('id')
+        print(search_data)
+
+        a=platform.objects.all().filter(id=search_data)
+        for i in a:
+
+
+            print(i)
+            b={
+                'platform':i.name
+            }
+        context.update(b)
+        print(context)
+        return  context
+
+
+
+
+
+
+
 
 
 
