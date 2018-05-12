@@ -67,7 +67,7 @@ class platform_size(models.Model):
 class platform_asstes(models.Model):
 
     name = models.CharField(max_length=24,verbose_name='设备配置')
-    platform_size = models.ForeignKey(verbose_name="设备配置",to=platform_size,to_field='id',on_delete=models.CASCADE)
+    platform_size = models.ForeignKey(verbose_name="设备型号",to=platform_size,to_field='id',on_delete=models.CASCADE)
     class Meta:
         db_table = "platform_asstes"
         verbose_name = "设备配置"
