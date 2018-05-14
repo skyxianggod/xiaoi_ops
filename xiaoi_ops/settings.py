@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     "pfdb",
     "gzdb",
     "base_info",
+    "assets",
 ]
 
 MIDDLEWARE = [

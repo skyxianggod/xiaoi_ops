@@ -241,8 +241,6 @@ class Platform_assetsAdd(LoginRequiredMixin, CreateView):
 
         a=platform.objects.all().filter(id=search_data)
         for i in a:
-
-
             print(i)
             b={
                 'platform':i.name
