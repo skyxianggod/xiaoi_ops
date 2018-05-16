@@ -74,10 +74,10 @@ def PersonZtree(request):
     :return:
     """
 
-    manager = person.objects.values("part").distinct()
+    manager = department.objects.values().distinct()
     data = [{"id": "1111", "pId": "0", "name": "部门"}, ]
     for i in manager:
-        data.append({"id": i['part'], "pId": "1111", "name": i['part']}, )
+        data.append({"id": i['id'], "pId": "1111", "name": i['name']}, )
     return HttpResponse(json.dumps(data), content_type='application/json')
 # 部门管理视图
 class PartAdd(LoginRequiredMixin, CreateView):

@@ -1,7 +1,6 @@
 {% extends "base.html" %}
 {% load  static %}
 {% block header-css %}
-    <link href="{% static 'css/plugins/ztree/awesomeStyle/awesome.css' %}" rel="stylesheet">
     <style type="text/css">
 
 
@@ -32,23 +31,23 @@
 
 {% endblock %}
 
-{% block  title %}员工信息{% endblock %}
+{% block  title %}固定资产信息{% endblock %}
 
 
 
 {% block page-content %}
     <div class="row wrapper border-bottom white-bg page-heading ">
         <div class="col-lg-10">
-            <h2>基础信息管理</h2>
+            <h2>资产信息</h2>
             <ol class="breadcrumb">
                 <li>
                     <a href="{% url "index" %}">主页</a>
                 </li>
                 <li>
-                    <a>基础资料</a>
+                    <a>资产管理</a>
                 </li>
                 <li class="active">
-                    <strong>员工信息</strong>
+                    <strong>资产信息</strong>
                 </li>
             </ol>
         </div>
@@ -81,7 +80,7 @@
                 <div class="ibox float-e-margins">
 
                     <div class="ibox-title">
-                        <h5>员工信息</h5>
+                        <h5>资产信息</h5>
                         <div class="ibox-tools">
                             <a class="collapse-link">
                                 <i class="fa fa-chevron-up"></i>
@@ -104,16 +103,15 @@
 
                         <div class="table-responsive">
 
-                            <form id="cha" class="form-horizontal" action="{% url 'base_info:person_list' %}"
-                                  method="GET">
+                            <form id="cha" class="form-horizontal" action="{% url 'cmdb:cmdb_list' %}" method="GET">
                                 {% csrf_token %}
                                 <div class="col-md-2"><input type="text" class="form-control" name="name"
-                                                             placeholder="员工编号|姓名" required></div>
+                                                             placeholder="使用人 资产编号" required></div>
 
                                 <button class="btn btn-sm btn-primary" type="submit">查询</button>
 
 
-                                <a href="{% url  'base_info:person_add' %}" class=" btn btn-sm btn-primary ">
+                                <a href="{% url  'assets:assets_add' %}" class=" btn btn-sm btn-primary ">
                                     添加</a>
 
 
@@ -127,28 +125,30 @@
                                     <thead>
                                     <tr>
                                         <th width="20"><input type="checkbox" id="CheckedAll"></th>
-                                        <th>工号</th>
-                                        <th>姓名</th>
-                                        <th>部门</th>
-                                        <th>联系方式</th>
+                                        <th>资产编号</th>
+                                        <th>设备类型</th>
+                                        <th>设备型号</th>
+                                        <th>资产状态</th>
+                                        <th>使用人</th>
                                         <th>操作</th>
                                     </tr>
                                     </thead>
                                     <tbody>
 
-                                    {% for   row   in   person_list %}
+                                    {% for   row   in   assets_list %}
 
                                         <tr class="gradeA" id="{{ row.id }}">
-                                            <td><input type="checkbox" value="{{ row.id }}" name="id"></td>
+                                            <td><input type="checkbox" value="{{ row.uid }}" name="id"></td>
                                             <td class="center">
-                                                {{ row.id }}
+                                                <a href=".">{{ row.uid }}</a>
                                             </td>
-                                            <td class="center">{{ row.name }}</td>
-                                            <td class="center">{{ row.part }}</td>
-                                            <td class="center">{{ row.mobile }}</td>
+                                            <td class="center">{{ row.utype }}</td>
+                                            <td class="center">{{ row.usize }}</td>
+                                            <td class="center">{{ row.active }}</td>
+                                            <td class="center">{{ row.user }}</td>
                                             <td><a class="btn btn-primary  btn-xs "
-                                                   href="{% url "base_info:person_update" pk=row.id %}">编辑</a>
-                                                <a class="btn btn-danger  btn-xs  person_del">删除</a>
+                                                   href="{% url "assets:assets_update" pk=row.uid %} ">编辑</a>
+                                                <a class="btn btn-danger  btn-xs  cmdb_del">删除</a>
                                             </td>
                                             </td>
                                         </tr>
@@ -156,8 +156,8 @@
                                     </tbody>
 
                                 </table>
-{#                                <button class="btn btn-sm btn-primary" type="submit">导出</button>#}
-{#                                <a href="{% url "cmdb:cmdb_export" %}" class="btn btn-sm btn-primary ">导出全部</a>#}
+                                <button class="btn btn-sm btn-primary" type="submit">导出</button>
+                                <a href="{% url "cmdb:cmdb_export" %}" class="btn btn-sm btn-primary ">导出全部</a>
                                 <a class="btn btn-sm btn-danger  cmdb_all_del"
                                 >批量删除
                                 </a>
@@ -165,10 +165,10 @@
 
 
                                     <ul class="pagination">
-                                        <li><a href="{% url "base_info:person_list" %}?page=1">首页 </a></li>
+                                        <li><a href="{% url "cmdb:cmdb_list" %}?page=1">首页 </a></li>
                                         {% if  page_obj.has_previous %}
                                             <li>
-                                                <a href="{% url "base_info:person_list" %}?page={{ page_obj.previous_page_number }}&{{ search_data }}">
+                                                <a href="{% url "cmdb:cmdb_list" %}?page={{ page_obj.previous_page_number }}&{{ search_data }}">
                                                     上一页 </a></li>
                                         {% else %}
                                             <li class="disabled"><a> 上一页 </a></li>
@@ -178,21 +178,21 @@
                                             {% if  search_data %}  <!-- 判断是否是搜索分页-->
                                                 {% if p == page_obj.number %}
                                                     <li class="active"><a
-                                                            href="{% url "base_info:person_list" %}?page={{ p }}&{{ search_data }}"> {{ p }} </a>
+                                                            href="{% url "cmdb:cmdb_list" %}?page={{ p }}&{{ search_data }}"> {{ p }} </a>
                                                     </li>
                                                 {% else %}
                                                     <li>
-                                                        <a href="{% url "base_info:person_list" %}?page={{ p }}&{{ search_data }}"> {{ p }} </a>
+                                                        <a href="{% url "cmdb:cmdb_list" %}?page={{ p }}&{{ search_data }}"> {{ p }} </a>
                                                     </li>
                                                 {% endif %}
                                             {% else %}
                                                 {% if p == page_obj.number %}
                                                     <li class="active"><a
-                                                            href="{% url "base_info:person_list" %}?page={{ p }}"> {{ p }} </a>
+                                                            href="{% url "cmdb:cmdb_list" %}?page={{ p }}"> {{ p }} </a>
                                                     </li>
                                                 {% else %}
                                                     <li>
-                                                        <a href="{% url "base_info:person_list" %}?page={{ p }}"> {{ p }} </a>
+                                                        <a href="{% url "cmdb:cmdb_list" %}?page={{ p }}"> {{ p }} </a>
                                                     </li>
                                                 {% endif %}
                                             {% endif %}
@@ -201,11 +201,11 @@
 
                                         {% if  page_obj.has_next %}
                                             <li>
-                                                <a href="{% url "base_info:person_list" %}?page={{ page_obj.next_page_number }}&{{ search_data }}">
+                                                <a href="{% url "cmdb:cmdb_list" %}?page={{ page_obj.next_page_number }}&{{ search_data }}">
                                                     下一页 </a></li>
                                         {% endif %}
                                         <li>
-                                            <a href="{% url "base_info:person_list" %}?page={{ page_obj.paginator.num_pages }}">尾页 </a>
+                                            <a href="{% url "cmdb:cmdb_list" %}?page={{ page_obj.paginator.num_pages }}">尾页 </a>
                                         </li>
                                         <li><span
                                                 style="color: #0a0a0a">总: &nbsp;{{ page_obj.paginator.num_pages }} 页 </span>
@@ -263,7 +263,7 @@
                 };
 
                 $.ajax({
-                    url: '{% url 'base_info:person_ztree' %}',
+                    url: '{}',
                     type: 'get',
                     data: '',
                     dataType: 'json',
@@ -282,43 +282,43 @@
             function zTreeOnClick(treeNode) {
 
                 if (treeNode.id == 1111) {
-                    window.location.href = '/base_info/person.html'
+                    window.location.href = '/cmdb/cmdb_list.html'
                 }
                 else {
-                    window.location.href = '/base_info/person.html?name=' + treeNode.id
+                    window.location.href = '/cmdb/cmdb_list.html?name=' + treeNode.name
                 }
             }
 
-{#            $(document).ready(function () {#}
-{#                $('.dataTables-cmdb').DataTable({#}
-{##}
-{#                    "oLanguage": {#}
-{#                        "sLengthMenu": "每页显示 _MENU_ 条记录",#}
-{#                        "sZeroRecords": "对不起，查询不到任何相关数据",#}
-{#                        "sInfo": "当前显示 _START_ 到 _END_ 条，共 _TOTAL_条记录",#}
-{#                        "sInfoEmtpy": "找不到相关数据",#}
-{#                        "sInfoFiltered": " 数据表中共为 _MAX_ 条记录",#}
-{#                        "sProcessing": "正在加载中...",#}
-{#                        "sSearch": "搜索",#}
-{#                        "oPaginate": {#}
-{#                            "sFirst": "第一页",#}
-{#                            "sPrevious": " 上一页 ",#}
-{#                            "sNext": " 下一页 ",#}
-{#                            "sLast": " 最后一页 "#}
-{#                        }#}
-{#                    },#}
-{#                    "order": [[1, 'desc']],#}
-{#                    destroy: true,#}
-{##}
-{##}
-{#                    bPaginate: false,#}
-{#                    dom: '<"html5buttons"B>lTfgitp,'#}
-{##}
-{#                });#}
-{#            });#}
+            $(document).ready(function () {
+                $('.dataTables-cmdb').DataTable({
+
+                    "oLanguage": {
+                        "sLengthMenu": "每页显示 _MENU_ 条记录",
+                        "sZeroRecords": "对不起，查询不到任何相关数据",
+                        "sInfo": "当前显示 _START_ 到 _END_ 条，共 _TOTAL_条记录",
+                        "sInfoEmtpy": "找不到相关数据",
+                        "sInfoFiltered": " 数据表中共为 _MAX_ 条记录",
+                        "sProcessing": "正在加载中...",
+                        "sSearch": "搜索",
+                        "oPaginate": {
+                            "sFirst": "第一页",
+                            "sPrevious": " 上一页 ",
+                            "sNext": " 下一页 ",
+                            "sLast": " 最后一页 "
+                        }
+                    },
+                    "order": [[1, 'desc']],
+                    destroy: true,
+
+
+                    bPaginate: false,
+                    dom: '<"html5buttons"B>lTfgitp,'
+
+                });
+            });
             $(function () {
 
-                $(document).on('click', '.person_del', function () {
+                $(document).on('click', '.cmdb_del', function () {
                     var id = $(this).parent().parent().attr('id');
                     swal({
                         title: "你确定删除",
@@ -331,7 +331,7 @@
                     }, function () {
                         $.ajax({
                             headers: {"X-CSRFToken": '{{ csrf_token }}'},
-                            url: "/base_info/person-del.html",
+                            url: "/cmdb/cmdb-del.html",
                             type: 'POST',
                             data: {'nid': id},
                             success: function (data) {
@@ -366,7 +366,7 @@
                     }, function () {
                         $.ajax({
                             headers: {"X-CSRFToken": '{{ csrf_token }}'},
-                            url: "/person/person-del.html",
+                            url: "/cmdb/cmdb-del.html",
                             type: 'POST',
                             data: $('#del_form_cmdb_all').serialize(),
                             success: function (data) {

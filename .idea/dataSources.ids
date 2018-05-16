@@ -4,6 +4,26 @@
     <database-info product="SQLite" version="3.20.1" jdbc-version="2.1" driver-name="SQLite JDBC" driver-version="3.20.1.1"/>
     <case-sensitivity plain-identifiers="mixed" quoted-identifiers="mixed"/>
     <schema name="" catalog=""/>
+    <table name="active" schema="" catalog="" type="TABLE">
+      <column name="id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="name" sqlType="VARCHAR(24)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <primary-key columns="id"/>
+    </table>
+    <table name="assets" schema="" catalog="" type="TABLE">
+      <column name="uid" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <column name="utype" sqlType="VARCHAR(64)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="usize" sqlType="VARCHAR(64)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="uconf" sqlType="TEXT" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="ctime" sqlType="DATE" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="user" sqlType="VARCHAR(24)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="otime" sqlType="DATE" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="gtime" sqlType="DATE" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="active_id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <primary-key columns="uid"/>
+      <foreign-key name="#FAKE_assets_1" columns="active_id" ref-table="active" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
+      <index name="assets_active_id_cf7d0b21" unique="true" columns="active_id"/>
+      <index name="assets_user_4843be67" unique="true" columns="user"/>
+    </table>
     <table name="auth_group" schema="" catalog="" type="TABLE">
       <column name="id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4" autoIncrement="true"/>
       <column name="name" sqlType="VARCHAR(80)" precision="0" scale="-1" nullable="false" jdbcType="12"/>

@@ -23,7 +23,9 @@ class CmdbForm(forms.ModelForm):
                 attrs={'cols': 80, 'rows': 3}),
             'platform': forms.Select(
                 attrs={'class': 'select2',
-                       'data-placeholder': ('----请选择机器类型----')}),
+                       'data-placeholder': ('----请选择机器类型----'),
+                        'id':'wwwwwwwwwwww'}),
+
             'manager': forms.Select(
                 attrs={'class': 'select2',
                        'data-placeholder': ('----请选择负责人----')}),
