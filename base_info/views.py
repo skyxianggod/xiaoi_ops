@@ -30,7 +30,11 @@ class PersonList(LoginRequiredMixin, ListView):
     def get_queryset(self):
         if self.request.GET.get('name'):
             query = self.request.GET.get('name', None)
-            queryset =super().get_queryset().filter(Q(name=query) | Q(id=query) |Q(part=query)).order_by('-id')
+
+            try:
+                queryset =super().get_queryset().filter(Q(name=query) | Q(id=query) |Q(part=query)).order_by('-id')
+            except BaseException:
+                queryset =super().get_queryset().filter(Q(name=query) | Q(id=query)).order_by('-id')
         else:
             queryset = super().get_queryset()
         return queryset

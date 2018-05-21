@@ -45,11 +45,40 @@ class AssetsForm(forms.ModelForm):
         # }
 class AssetsForm_give(forms.ModelForm):
 
+    user = forms.CharField(max_length=24,label="用户")
 
     class Meta:
         model = assets
         # fields = '__all__'
-        fields = ['otime','user','uid',
+        fields = ['otime','user','active','gtime',
+        ]
+
+
+        widgets = {
+            'uconf': forms.Textarea(
+                attrs={'cols': 80, 'rows': 3}),
+            # 'utpye': forms.ModelChoiceField(
+            #     attrs={'id': 'utype_id',}),
+
+            'otime': forms.DateInput(
+                attrs={'type': 'date','required':'True'}
+            ),
+            'gtime': forms.DateInput(
+                attrs={'type': 'date','required':'True'}
+            ),
+            'ctime': forms.DateInput(
+                attrs={'type': 'date', }
+            ),
+        }
+
+
+class AssetsForm_in(forms.ModelForm):
+
+
+    class Meta:
+        model = assets
+        # fields = '__all__'
+        fields = ['otime','user','active','gtime',
         ]
 
 
@@ -69,3 +98,4 @@ class AssetsForm_give(forms.ModelForm):
                 attrs={'type': 'date', }
             ),
         }
+

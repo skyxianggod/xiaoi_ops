@@ -28,11 +28,12 @@ class assets(models.Model):
         verbose_name = "固定资产"
         verbose_name_plural = '固定资产'
         permissions = {
-            ('read_assets', u"只读资产库"),
+            ('read_assets', u"quit"
+                            u"只读资产库"),
         }
 
     def __str__(self):
-        return self.uid
+        return str(self.uid)
 
 # active.objects.create(name='在库')
 # active.objects.create(name='领用')
