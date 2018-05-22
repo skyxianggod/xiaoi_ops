@@ -14,7 +14,7 @@ class active(models.Model):
 
 class assets(models.Model):
 
-    uid = models.IntegerField(primary_key=True,verbose_name='资产编号',db_index=True)
+    uid = models.CharField(max_length=24,primary_key=True,verbose_name='资产编号',db_index=True)
     utype = models.ForeignKey(to=platform,on_delete=models.CASCADE,to_field='id',verbose_name='设备类型')
     usize = models.ForeignKey(to=platform_size,on_delete=models.CASCADE,to_field='id',verbose_name='设备型号')
     uconf = models.TextField(max_length=128,verbose_name='设备配置')

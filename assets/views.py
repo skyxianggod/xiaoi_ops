@@ -16,20 +16,20 @@ class AssetsList(LoginRequiredMixin,ListView):
     model = assets
     context_object_name = 'assets_list'
     paginate_by = settings.DISPLAY_PER_PAGE
-    ordering = ("uid")
+    ordering = ("active")
 
     def get_queryset(self):
         if self.request.GET.get('name'):
             query = self.request.GET.get('name', None)
             print(query)
             try:
-                queryset =super().get_queryset().filter(Q(user=query)|Q(uid=query))
-                print("转换正常了")
+                queryset =super().get_queryset().filter(Q(user=query)|Q(uid=query)).order_by('active')
+                # print("转换正常了")
             except BaseException:
-                queryset =super().get_queryset().filter(Q(user=query))
+                queryset =super().get_queryset().filter(Q(user=query)).order_by('active')
 
 
-                print("转换异常了")
+                # print("转换异常了")
         else:
             queryset = super().get_queryset()
         return queryset
@@ -42,10 +42,13 @@ class AssetsAdd(LoginRequiredMixin, CreateView):
     model = assets
     form_class = AssetsForm
     template_name = 'assets/assets-add-update.html'
-    success_url = reverse_lazy('assets:assets_list')
+    # success_url = reverse_lazy('assets:assets_list')
 
     def post(self, request, *args, **kwargs):
         print(self.request.POST)
+        pk=request.POST['uid']
+        print(pk)
+        self.success_url=reverse_lazy('tb_log:tb_log_create',kwargs={'pk':pk,'kw':'c','user':'c'})
         return super().post(request, *args, **kwargs)
 
 
@@ -72,23 +75,36 @@ class AssetsDetail(LoginRequiredMixin,DetailView):
         kwargs.update(text)
         return super().get_context_data(**kwargs)
 
+
+
 class AssetsUpdate(LoginRequiredMixin,UpdateView):
 
     model = assets
     form_class = AssetsForm_give
     template_name = 'assets/assets-add-update-give.html'
-    success_url = reverse_lazy('assets:assets_list')
+    # success_url = reverse_lazy('assets:assets_list')
 
     def post(self, request, *args, **kwargs):
+
+        pk = self.request.path.split('.')[0].split('-')[-1]
+        # print(pk)
+
+        # print(reverse_lazy('tb_log:tb_log_create',kwargs={'pk':pk,}))
+
+        # print(self.request.path)
         b=self.request.path
         a=self.request.POST.copy()
         ret=re.search('-g-',b)
+
+        user = self.request.POST['user']
         if ret is None:
-            a['active']=3
+            a['active'] = 3
+            self.success_url=reverse_lazy('tb_log:tb_log_create',kwargs={'pk':pk,'kw':'l','user':user})
         else:
-            a['active']=2
+            a['active'] = 2
+            self.success_url=reverse_lazy('tb_log:tb_log_create',kwargs={'pk':pk,'kw':'o','user':user})
         # print(a)
-        self.request.POST=a
+        self.request.POST = a
         return super().post(request, *args, **kwargs)
 
 
@@ -97,14 +113,16 @@ class AssetsUpdatein(LoginRequiredMixin,UpdateView):
     model = assets
     form_class = AssetsForm_in
     template_name = 'assets/assets-add-update-in.html'
-    success_url = reverse_lazy('assets:assets_list')
+    # success_url = reverse_lazy('assets:assets_list')
 
     def post(self, request, *args, **kwargs):
+        pk = self.request.path.split('.')[0].split('-')[-1]
         a=self.request.POST.copy()
         a['active']=1
         a['user']=''
         a['otime']=''
         print(a)
+        self.success_url=reverse_lazy('tb_log:tb_log_create',kwargs={'pk':pk,'kw':'i','user':'c'})
         self.request.POST=a
         return super().post(request, *args, **kwargs)
 

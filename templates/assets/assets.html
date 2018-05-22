@@ -106,7 +106,7 @@
                             <form id="cha" class="form-horizontal" action="{% url 'assets:assets_list' %}" method="GET">
                                 {% csrf_token %}
                                 <div class="col-md-2"><input type="text" class="form-control" name="name"
-                                                             placeholder="使用人 资产编号" required></div>
+                                                             placeholder="使用人 资产编号" ></div>
 
                                 <button class="btn btn-sm btn-primary" type="submit">查询</button>
 
@@ -166,10 +166,10 @@
 
 
                                     <ul class="pagination">
-                                        <li><a href="{% url "cmdb:cmdb_list" %}?page=1">首页 </a></li>
+                                        <li><a href="{% url "assets:assets_list" %}?page=1">首页 </a></li>
                                         {% if  page_obj.has_previous %}
                                             <li>
-                                                <a href="{% url "cmdb:cmdb_list" %}?page={{ page_obj.previous_page_number }}&{{ search_data }}">
+                                                <a href="{% url "assets:assets_list" %}?page={{ page_obj.previous_page_number }}&{{ search_data }}">
                                                     上一页 </a></li>
                                         {% else %}
                                             <li class="disabled"><a> 上一页 </a></li>
@@ -179,21 +179,21 @@
                                             {% if  search_data %}  <!-- 判断是否是搜索分页-->
                                                 {% if p == page_obj.number %}
                                                     <li class="active"><a
-                                                            href="{% url "cmdb:cmdb_list" %}?page={{ p }}&{{ search_data }}"> {{ p }} </a>
+                                                            href="{% url "assets:assets_list" %}?page={{ p }}&{{ search_data }}"> {{ p }} </a>
                                                     </li>
                                                 {% else %}
                                                     <li>
-                                                        <a href="{% url "cmdb:cmdb_list" %}?page={{ p }}&{{ search_data }}"> {{ p }} </a>
+                                                        <a href="{% url "assets:assets_list" %}?page={{ p }}&{{ search_data }}"> {{ p }} </a>
                                                     </li>
                                                 {% endif %}
                                             {% else %}
                                                 {% if p == page_obj.number %}
                                                     <li class="active"><a
-                                                            href="{% url "cmdb:cmdb_list" %}?page={{ p }}"> {{ p }} </a>
+                                                            href="{% url "assets:assets_list" %}?page={{ p }}"> {{ p }} </a>
                                                     </li>
                                                 {% else %}
                                                     <li>
-                                                        <a href="{% url "cmdb:cmdb_list" %}?page={{ p }}"> {{ p }} </a>
+                                                        <a href="{% url "assets:assets_list" %}?page={{ p }}"> {{ p }} </a>
                                                     </li>
                                                 {% endif %}
                                             {% endif %}
@@ -202,11 +202,11 @@
 
                                         {% if  page_obj.has_next %}
                                             <li>
-                                                <a href="{% url "cmdb:cmdb_list" %}?page={{ page_obj.next_page_number }}&{{ search_data }}">
+                                                <a href="{% url "assets:assets_list" %}?page={{ page_obj.next_page_number }}&{{ search_data }}">
                                                     下一页 </a></li>
                                         {% endif %}
                                         <li>
-                                            <a href="{% url "cmdb:cmdb_list" %}?page={{ page_obj.paginator.num_pages }}">尾页 </a>
+                                            <a href="{% url "assets:assets_list" %}?page={{ page_obj.paginator.num_pages }}">尾页 </a>
                                         </li>
                                         <li><span
                                                 style="color: #0a0a0a">总: &nbsp;{{ page_obj.paginator.num_pages }} 页 </span>

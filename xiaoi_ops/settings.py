@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     "gzdb",
     "base_info",
     "assets",
+    "tb_log",
 ]
 
 MIDDLEWARE = [

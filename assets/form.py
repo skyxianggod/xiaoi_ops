@@ -10,7 +10,7 @@ class AssetsForm(forms.ModelForm):
     class Meta:
         model = assets
         # fields = '__all__'
-        fields = ['uid','utype','usize','uconf','ctime','gtime','otime','user','active',
+        fields = ['uid','utype','usize','uconf','ctime',
         ]
 
 
