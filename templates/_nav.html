@@ -48,12 +48,13 @@
                     <span class="fa arrow"> </span></a>
                 <ul class="nav nav-second-level">
                     <li ><a href="{% url "assets:assets_list" %}">固资管理</a></li>
-                    <li ><a href="{% url "pfdb:pfdb_list" %}">物品管理</a></li>
-                    <li ><a href="{% url "pfdb:pfdb_list" %}">资产入库</a></li>
+                    <li ><a href="{% url "tb_log:tb_log_list" %}">操作记录</a></li>
+                    <li ><a href="{% url "assets:assets_list" %}">资产统计</a></li>
+{#                    <li ><a href="{% url "pfdb:pfdb_list" %}">资产入库</a></li>#}
                 </ul>
             </li>
             <li>
-                <a href="#"><i class="fa fa-inbox"></i> <span class="nav-label">资产管理</span>
+                <a href="#"><i class="fa fa-inbox"></i> <span class="nav-label">外网资产管理</span>
                     <span class="fa arrow"> </span></a>
                 <ul class="nav nav-second-level">
                     <li ><a href="{% url "cmdb:cmdb_list" %}">资产信息</a></li>
@@ -79,7 +80,8 @@
                 <a href="#"><i class="fa fa-inbox"></i> <span class="nav-label">管理</span>
                     <span class="fa arrow"> </span></a>
                 <ul class="nav nav-second-level">
-                    <li ><a href="{% url "pfdb:pfdb_list" %}">平台信息</a></li>
+
+                    <li ><a href="{% url "pfdb:pfdb_list" %}">后台管理</a></li>
                 </ul>
             </li>
 

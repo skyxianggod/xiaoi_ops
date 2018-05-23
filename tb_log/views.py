@@ -3,8 +3,28 @@ import time
 from django.urls import reverse_lazy
 # from assets.urls import *
 # Create your views here.
+from django.views.generic import  ListView
 from tb_log import models
-def tb_log(request,**kwargs):
+from xiaoi_ops import  settings
+from django.db.models import Q
+
+class LogView(ListView):
+    template_name = 'assets/tb_log.html'
+    model = models.tb_log
+    context_object_name = 'log_list'
+    paginate_by = settings.DISPLAY_PER_PAGE
+    ordering = ("id")
+    def get_queryset(self):
+        if self.request.GET.get('name'):
+            query = self.request.GET.get('name', None)
+            print(query)
+            queryset =super().get_queryset().filter(Q(uid_id=query)).order_by('id')
+        else:
+            queryset = super().get_queryset()
+        return queryset
+
+
+def logcreate(request,**kwargs):
     if request.method == "GET":
         a=request.path
         user = a.split('.')[0].split('-')[-1]

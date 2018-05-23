@@ -118,6 +118,7 @@
 
 
                             </form>
+                        <div>&nbsp;</div>
                             <form id="del_form_cmdb_all" class="form-horizontal  "
                                   action="{% url "cmdb:cmdb_export" %}" method="post">
                                 {% csrf_token %}
@@ -141,7 +142,7 @@
                                         <tr class="gradeA" id="{{ row.id }}">
                                             <td><input type="checkbox" value="{{ row.id }}" name="id"></td>
                                             <td class="center">
-                                                {{ row.id }}
+                                                {{ row.uid }}
                                             </td>
                                             <td class="center">{{ row.name }}</td>
                                             <td class="center">{{ row.part }}</td>

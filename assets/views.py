@@ -16,17 +16,17 @@ class AssetsList(LoginRequiredMixin,ListView):
     model = assets
     context_object_name = 'assets_list'
     paginate_by = settings.DISPLAY_PER_PAGE
-    ordering = ("active")
+    ordering = ("active_id")
 
     def get_queryset(self):
         if self.request.GET.get('name'):
             query = self.request.GET.get('name', None)
             print(query)
             try:
-                queryset =super().get_queryset().filter(Q(user=query)|Q(uid=query)).order_by('active')
+                queryset =super().get_queryset().filter(Q(user=query)|Q(uid=query)).order_by('active_id')
                 # print("转换正常了")
             except BaseException:
-                queryset =super().get_queryset().filter(Q(user=query)).order_by('active')
+                queryset =super().get_queryset().filter(Q(user=query)).order_by('active_id')
 
 
                 # print("转换异常了")
@@ -99,10 +99,10 @@ class AssetsUpdate(LoginRequiredMixin,UpdateView):
         user = self.request.POST['user']
         if ret is None:
             a['active'] = 3
-            self.success_url=reverse_lazy('tb_log:tb_log_create',kwargs={'pk':pk,'kw':'l','user':user})
+            self.success_url=reverse_lazy('tb_log:tb_log_create',kwargs={'pk':pk,'kw':'o','user':user})
         else:
             a['active'] = 2
-            self.success_url=reverse_lazy('tb_log:tb_log_create',kwargs={'pk':pk,'kw':'o','user':user})
+            self.success_url=reverse_lazy('tb_log:tb_log_create',kwargs={'pk':pk,'kw':'l','user':user})
         # print(a)
         self.request.POST = a
         return super().post(request, *args, **kwargs)

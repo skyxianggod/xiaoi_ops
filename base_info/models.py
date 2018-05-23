@@ -3,7 +3,7 @@ from django.db import models
 
 # Create your models here.
 class person(models.Model):
-    id = models.CharField(max_length=24, primary_key=True, blank=False, verbose_name='工号')
+    uid = models.CharField(max_length=24, blank=False, verbose_name='工号',unique=True)
     name = models.CharField(max_length=24, blank=False, verbose_name='姓名')
     part = models.ForeignKey(to='department',to_field='id',on_delete=models.CASCADE,max_length=24, verbose_name='部门')
     mobile = models.CharField(max_length=11, verbose_name='手机号码')

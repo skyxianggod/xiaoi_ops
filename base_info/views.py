@@ -25,16 +25,16 @@ class PersonList(LoginRequiredMixin, ListView):
     template_name = 'base_info/person/person.html'
     context_object_name = "person_list"
     paginate_by = settings.DISPLAY_PER_PAGE
-    ordering = ("id")
+    ordering = ("uid")
 
     def get_queryset(self):
         if self.request.GET.get('name'):
             query = self.request.GET.get('name', None)
 
             try:
-                queryset =super().get_queryset().filter(Q(name=query) | Q(id=query) |Q(part=query)).order_by('-id')
+                queryset =super().get_queryset().filter(Q(name=query) | Q(uid=query) |Q(part_id=query)).order_by('-uid')
             except BaseException:
-                queryset =super().get_queryset().filter(Q(name=query) | Q(id=query)).order_by('-id')
+                queryset =super().get_queryset().filter(Q(name=query) | Q(uid=query)).order_by('-uid')
         else:
             queryset = super().get_queryset()
         return queryset

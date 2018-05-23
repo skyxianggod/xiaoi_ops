@@ -41,7 +41,7 @@ class PersonForm(forms.ModelForm):
         fields = '__all__'
         # exclude = ['part']
         help_texts = {
-            'id': '*  必填项目',
+            'uid': '*  必填项目',
             'name': '*  必填项目',
             'part': '*  必填项目',
             'mobile': '*  必填项目',
