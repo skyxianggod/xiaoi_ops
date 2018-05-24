@@ -17,11 +17,32 @@ class LogView(ListView):
     def get_queryset(self):
         if self.request.GET.get('name'):
             query = self.request.GET.get('name', None)
-            print(query)
+            # print(query)
             queryset =super().get_queryset().filter(Q(uid_id=query)).order_by('id')
         else:
             queryset = super().get_queryset()
         return queryset
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_object_name(object_list=None, **kwargs)
+
+        search_data = self.request.GET.copy()
+        print(search_data)
+        try:
+            search_data.pop("page")
+
+        except BaseException as e:
+            pass
+        print(search_data.dict())
+        print(search_data.urlencode())
+        # context.update(search_data.dict())
+        # 左侧导航站展开  "asset_active": "active",
+        context = {
+            "search_data": search_data.urlencode(),
+            "assets_class": 'active',
+        }
+        kwargs.update(context)
+        return super().get_context_data(**kwargs)
 
 
 def logcreate(request,**kwargs):
