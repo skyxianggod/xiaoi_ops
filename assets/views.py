@@ -18,18 +18,37 @@ class AssetsList(LoginRequiredMixin,ListView):
     paginate_by = settings.DISPLAY_PER_PAGE
     ordering = ("active_id")
 
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+
+        search_data = self.request.GET.copy()
+        print(search_data)
+        try:
+            search_data.pop("page")
+
+        except BaseException as e:
+            pass
+        # print(search_data.dict())
+        # print(search_data.urlencode())
+        # context.update(search_data.dict())
+        # 左侧导航站展开  "asset_active": "active",
+        context = {
+            "search_data": search_data.urlencode(),
+            "assets_class": 'active',
+        }
+        kwargs.update(context)
+        return super().get_context_data(**kwargs)
+
+
+
     def get_queryset(self):
         if self.request.GET.get('name'):
             query = self.request.GET.get('name', None)
             print(query)
             try:
                 queryset =super().get_queryset().filter(Q(user=query)|Q(uid=query)).order_by('active_id')
-                # print("转换正常了")
             except BaseException:
                 queryset =super().get_queryset().filter(Q(user=query)).order_by('active_id')
-
-
-                # print("转换异常了")
         else:
             queryset = super().get_queryset()
         return queryset
@@ -126,6 +145,18 @@ class AssetsUpdatein(LoginRequiredMixin,UpdateView):
         self.request.POST=a
         return super().post(request, *args, **kwargs)
 
+
+
+# def repair(self):
+#     pk = self.request.path.split('.')[0].split('-')[-1]
+#     a=self.request.POST.copy()
+#     a['active']=1
+#     a['user']=''
+#     a['otime']=''
+#     print(a)
+#     self.success_url=reverse_lazy('tb_log:tb_log_create',kwargs={'pk':pk,'kw':'i','user':'c'})
+#     self.request.POST=a
+#     return super().post(request, *args, **kwargs)
 
 
 

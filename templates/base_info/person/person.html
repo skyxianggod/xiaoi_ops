@@ -367,7 +367,7 @@
                     }, function () {
                         $.ajax({
                             headers: {"X-CSRFToken": '{{ csrf_token }}'},
-                            url: "/person/person-del.html",
+                            url: "/base_info/person-del.html",
                             type: 'POST',
                             data: $('#del_form_cmdb_all').serialize(),
                             success: function (data) {

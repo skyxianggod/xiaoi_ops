@@ -26,7 +26,7 @@
                 </a>
 
             </li>
-            <li>
+            <li class="{{ base_info_class }}">
                 <a href="#"><i class="fa fa-inbox"></i> <span class="nav-label">基础信息</span>
                     <span class="fa arrow"> </span></a>
                 <ul class="nav nav-second-level">
@@ -53,7 +53,7 @@
 {#                    <li ><a href="{% url "pfdb:pfdb_list" %}">资产入库</a></li>#}
                 </ul>
             </li>
-            <li>
+            <li class="{{ cmdb_class }}">
                 <a href="#"><i class="fa fa-inbox"></i> <span class="nav-label">外网资产管理</span>
                     <span class="fa arrow"> </span></a>
                 <ul class="nav nav-second-level">
@@ -65,7 +65,7 @@
             </li>
 
 
-            <li>
+            <li class="{{ platform_class }}">
                 <a href="#"><i class="fa fa-inbox"></i> <span class="nav-label">平台管理</span>
                     <span class="fa arrow"> </span></a>
                 <ul class="nav nav-second-level">

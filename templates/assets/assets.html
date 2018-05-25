@@ -154,7 +154,7 @@
                                                 <a class="btn btn-primary  btn-xs "
                                                    href="{% url "assets:assets_update_i" pk=row.uid %} ">归还</a>
                                                 <a class="btn btn-warning  btn-xs "
-                                                   href="{% url "assets:assets_update_i" pk=row.uid %} ">维修</a>
+                                                    data-toggle="modal" data-target="#myModal">维修</a>
                                                 <a class="btn  btn-danger btn-xs "
                                                    href="{% url "assets:assets_update_i" pk=row.uid %} ">报废</a>
 
@@ -235,7 +235,46 @@
         </div>
     </div>
 
+ <form method="post" action="{{ row.id }}" class="form-horizontal" role="form" id="myForm" onsubmit="return ">
+     {% csrf_token %}
+     <div class="modal fade" id="myModal"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <!--  定义模态框，过渡效果为淡入，id为myModal,tabindex=-1可以禁用使用tab切换，aria-labelledby用于引用模态框的标题，aria-hidden=true保持模态框在触发前窗口不可见  -->
+            <div class="modal-dialog">
+                <!--  显示模态框对话框模型（若不写下一个div则没有颜色）  -->
+                <div class="modal-content">
+                    <!--  显示模态框白色背景，所有内容都写在这个div里面  -->
 
+                    <div class="btn-info modal-header">
+                        <!--  模态框标题  -->
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <!--  关闭按钮  -->
+                        <h4>资产报修</h4>
+                        <!--  标题内容  -->
+                    </div>
+
+                    <div class="modal-body">
+                        <!--  模态框内容，我在此处添加一个表单 -->
+                        <form class="form-horizontal" role="form">
+                            <div class="form-group">
+                                <label for="uname" class="col-sm-2 control-label">报修原因</label>
+                                <div class="col-sm-9">
+                                    <input type="text" id="uname" name="uname" class="form-control well" placeholder="例如：硬盘损坏"/>
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
+
+                    <div class="modal-footer">
+                        <!--  模态框底部样式，一般是提交或者确定按钮 -->
+                        <button type="submit" class="btn btn-info">确定</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    </div>
+
+                </div><!-- /.modal-content -->
+            </div>
+        </div> <!-- /.modal -->
+    </form>
 
 
 

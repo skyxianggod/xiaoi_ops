@@ -24,7 +24,6 @@ class LogView(ListView):
         return queryset
 
     def get_context_data(self, *, object_list=None, **kwargs):
-        context = super().get_context_object_name(object_list=None, **kwargs)
 
         search_data = self.request.GET.copy()
         print(search_data)

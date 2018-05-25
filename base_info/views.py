@@ -27,6 +27,26 @@ class PersonList(LoginRequiredMixin, ListView):
     paginate_by = settings.DISPLAY_PER_PAGE
     ordering = ("uid")
 
+    def get_context_data(self, *, object_list=None, **kwargs):
+
+        search_data = self.request.GET.copy()
+        print(search_data)
+        try:
+            search_data.pop("page")
+
+        except BaseException as e:
+            pass
+        print(search_data.dict())
+        print(search_data.urlencode())
+        # context.update(search_data.dict())
+        # 左侧导航站展开  "asset_active": "active",
+        context = {
+            "search_data": search_data.urlencode(),
+            "base_info_class": 'active',
+        }
+        kwargs.update(context)
+        return super().get_context_data(**kwargs)
+
     def get_queryset(self):
         if self.request.GET.get('name'):
             query = self.request.GET.get('name', None)
@@ -99,6 +119,27 @@ class PartList(LoginRequiredMixin, ListView):
     paginate_by = settings.DISPLAY_PER_PAGE
     ordering = ("id")
 
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+
+        search_data = self.request.GET.copy()
+        print(search_data)
+        try:
+            search_data.pop("page")
+
+        except BaseException as e:
+            pass
+        print(search_data.dict())
+        print(search_data.urlencode())
+        # context.update(search_data.dict())
+        # 左侧导航站展开  "asset_active": "active",
+        context = {
+            "search_data": search_data.urlencode(),
+            "base_info_class": 'active',
+        }
+        kwargs.update(context)
+        return super().get_context_data(**kwargs)
+
     def get_queryset(self):
         if self.request.GET.get('name'):
             query = self.request.GET.get('name', None)
@@ -155,6 +196,26 @@ class ShopList(LoginRequiredMixin, ListView):
     paginate_by = settings.DISPLAY_PER_PAGE
     ordering = ("id")
 
+    def get_context_data(self, *, object_list=None, **kwargs):
+
+        search_data = self.request.GET.copy()
+        print(search_data)
+        try:
+            search_data.pop("page")
+
+        except BaseException as e:
+            pass
+        print(search_data.dict())
+        print(search_data.urlencode())
+        # context.update(search_data.dict())
+        # 左侧导航站展开  "asset_active": "active",
+        context = {
+            "search_data": search_data.urlencode(),
+            "base_info_class": 'active',
+        }
+        kwargs.update(context)
+        return super().get_context_data(**kwargs)
+
 
 
 
@@ -195,6 +256,27 @@ class PlatformList(ListView):
     template_name = 'base_info/platform/platform.html'
     context_object_name = "dic_list"
     paginate_by = settings.DISPLAY_PER_PAGE
+
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+
+        search_data = self.request.GET.copy()
+        print(search_data)
+        try:
+            search_data.pop("page")
+
+        except BaseException as e:
+            pass
+        print(search_data.dict())
+        print(search_data.urlencode())
+        # context.update(search_data.dict())
+        # 左侧导航站展开  "asset_active": "active",
+        context = {
+            "search_data": search_data.urlencode(),
+            "base_info_class": 'active',
+        }
+        kwargs.update(context)
+        return super().get_context_data(**kwargs)
 
     def get_queryset(self):
 
