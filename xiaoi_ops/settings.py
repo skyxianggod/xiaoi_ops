@@ -133,4 +133,4 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
 
-DISPLAY_PER_PAGE = 25
+DISPLAY_PER_PAGE = 15
