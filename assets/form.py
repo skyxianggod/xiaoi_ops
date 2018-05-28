@@ -15,6 +15,8 @@ class AssetsForm(forms.ModelForm):
 
 
         widgets = {
+
+
             'uconf': forms.Textarea(
                 attrs={'cols': 80, 'rows': 3}),
             # 'utpye': forms.ModelChoiceField(
@@ -98,4 +100,6 @@ class AssetsForm_in(forms.ModelForm):
                 attrs={'type': 'date', }
             ),
         }
+
+
 

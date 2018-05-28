@@ -1,4 +1,5 @@
-from django.shortcuts import render,get_object_or_404
+from django.shortcuts import render,get_object_or_404,HttpResponseRedirect
+import time,json
 import re
 # Create your views here.
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -10,6 +11,7 @@ from  .models import *
 from .form import AssetsForm,AssetsForm_give,AssetsForm_in
 from django.core import serializers
 from django.db.models import Q
+from tb_log.models import tb_log
 
 class AssetsList(LoginRequiredMixin,ListView):
     template_name = 'assets/assets.html'
@@ -46,7 +48,7 @@ class AssetsList(LoginRequiredMixin,ListView):
             query = self.request.GET.get('name', None)
             print(query)
             try:
-                queryset =super().get_queryset().filter(Q(user=query)|Q(uid=query)).order_by('active_id')
+                queryset =super().get_queryset().filter(Q(user=query)|Q(uid=query)|Q(active_id=query)).order_by('active_id')
             except BaseException:
                 queryset =super().get_queryset().filter(Q(user=query)).order_by('active_id')
         else:
@@ -70,6 +72,18 @@ class AssetsAdd(LoginRequiredMixin, CreateView):
         self.success_url=reverse_lazy('tb_log:tb_log_create',kwargs={'pk':pk,'kw':'c','user':'c'})
         return super().post(request, *args, **kwargs)
 
+class AssetsUpdateDtail(LoginRequiredMixin, UpdateView):
+    model = assets
+    form_class = AssetsForm
+    template_name = 'assets/assets-update.html'
+    context_object_name = 'obj'
+    # success_url = reverse_lazy('assets:assets_list')
+    def post(self, request, *args, **kwargs):
+        print(self.request.POST)
+        pk=request.POST['uid']
+        print(pk)
+        self.success_url=reverse_lazy('tb_log:tb_log_create',kwargs={'pk':pk,'kw':'u','user':'c'})
+        return super().post(request, *args, **kwargs)
 
 def getdata(request):
     pk = request.GET['pk']
@@ -97,7 +111,7 @@ class AssetsDetail(LoginRequiredMixin,DetailView):
 
 
 class AssetsUpdate(LoginRequiredMixin,UpdateView):
-
+    '''借用和领用资产'''
     model = assets
     form_class = AssetsForm_give
     template_name = 'assets/assets-add-update-give.html'
@@ -116,47 +130,104 @@ class AssetsUpdate(LoginRequiredMixin,UpdateView):
         ret=re.search('-g-',b)
 
         user = self.request.POST['user']
-        if ret is None:
-            a['active'] = 3
-            self.success_url=reverse_lazy('tb_log:tb_log_create',kwargs={'pk':pk,'kw':'o','user':user})
-        else:
-            a['active'] = 2
-            self.success_url=reverse_lazy('tb_log:tb_log_create',kwargs={'pk':pk,'kw':'l','user':user})
-        # print(a)
-        self.request.POST = a
+        if assets.objects.get(uid=pk).active_id==1:
+            if ret is None:
+                a['active'] = 3
+                self.success_url=reverse_lazy('tb_log:tb_log_create',kwargs={'pk':pk,'kw':'o','user':user})
+            else:
+                a['active'] = 2
+                self.success_url=reverse_lazy('tb_log:tb_log_create',kwargs={'pk':pk,'kw':'l','user':user})
+            # print(a)
+            self.request.POST = a
+        else :
+            return HttpResponse('请先归还资产')
+
         return super().post(request, *args, **kwargs)
 
 
 class AssetsUpdatein(LoginRequiredMixin,UpdateView):
-
+    '''归还资产和资产报废'''
     model = assets
     form_class = AssetsForm_in
     template_name = 'assets/assets-add-update-in.html'
     # success_url = reverse_lazy('assets:assets_list')
 
     def post(self, request, *args, **kwargs):
+        b=self.request.path
         pk = self.request.path.split('.')[0].split('-')[-1]
         a=self.request.POST.copy()
-        a['active']=1
-        a['user']=''
-        a['otime']=''
-        print(a)
-        self.success_url=reverse_lazy('tb_log:tb_log_create',kwargs={'pk':pk,'kw':'i','user':'c'})
+        ret=re.search('-i-',b)
+        if ret :
+            a['active']=1
+            a['user']=''
+            a['otime']=''
+            self.success_url=reverse_lazy('tb_log:tb_log_create',kwargs={'pk':pk,'kw':'i','user':'c'})
+
+        else:
+            a['active']=5
+            a['user']=''
+            a['otime']=''
+            self.success_url=reverse_lazy('tb_log:tb_log_create',kwargs={'pk':pk,'kw':'p','user':'c'})
+
+
         self.request.POST=a
         return super().post(request, *args, **kwargs)
 
 
 
-# def repair(self):
-#     pk = self.request.path.split('.')[0].split('-')[-1]
-#     a=self.request.POST.copy()
-#     a['active']=1
-#     a['user']=''
-#     a['otime']=''
-#     print(a)
-#     self.success_url=reverse_lazy('tb_log:tb_log_create',kwargs={'pk':pk,'kw':'i','user':'c'})
-#     self.request.POST=a
-#     return super().post(request, *args, **kwargs)
+def repair(request,**kwargs):
+    '''维修资产'''
+    if request.method == 'GET':
+        return render(request,'assets/wx_log.html')
+
+    if request.method == 'POST':
+
+        pk = request.path.split('.')[0].split('-')[-1]
+        str_id = request.POST['wx']
+
+        if assets.objects.get(uid=pk).active_id==1:
+
+            assets.objects.filter(uid=pk).update(active_id=4)
+
+        else :
+            return HttpResponse('请先归还资产')
+        str1=str(pk)+'在'+time.strftime("%Y-%m-%d",time.localtime(time.time()))+'报修'+'  报修原因：'+str_id
+        try:
+            tb_log.objects.create(uid_id=pk,log_info=str1)
+        except BaseException :
+                return HttpResponse('数据录入成功，操作日志录入失败，请联系开发人员')
+        else:
+            return HttpResponseRedirect(reverse_lazy('assets:assets_list'))
+
+
+def AssetsZtree(request):
+    """
+    获取 区域 资产树 的相关数据
+    :param request:
+    :return:
+    """
+
+    manager = active.objects.values()
+    data = [{"id": "1111", "pId": "0", "name": "状态"}, ]
+    for i in manager:
+        # print(i['id'])
+        data.append({"id": i['id'], "pId": "1111", "name": i['name'], "page": "xx.action"}, )
+    return HttpResponse(json.dumps(data), content_type='application/json')
+
+
+
+
+
+
+    #
+
+    # a=self.request.POST.copy()
+    # a['active']=1
+    # a['user']=''
+    # a['otime']=''
+    # print(a)
+    # self.success_url=reverse_lazy('tb_log:tb_log_create',kwargs={'pk':pk,'kw':'i','user':'c'})
+    # self.request.POST=a
 
 
 

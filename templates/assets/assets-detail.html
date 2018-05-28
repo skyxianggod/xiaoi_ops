@@ -38,12 +38,13 @@
                                 <a class="text-center"><i class="fa fa-laptop"></i>资产详情</a>
                             </li>
                             <li class="pull-right">
-                                <a class="btn btn-outline btn-default" href="{% url "cmdb:cmdb_update" nid %}"><i
+                                <a class="btn btn-outline btn-default" href="{% url "assets:assets_update" nid %}"><i
                                         class="fa fa-edit"></i>编辑</a>
+
                             </li>
                             <li class="pull-right">
-                                <a class="btn btn-outline btn-danger  cmdb_del">
-                                    <i class="fa fa-edit"></i>删除
+                                <a class="btn btn-outline btn-info" href="{% url 'tb_log:tb_log_list'  %}?name={{ nid }}">
+                                    <i class="fa fa-edit"></i>生命周期
                                 </a>
                             </li>
 
@@ -205,45 +206,7 @@
     {% block footer-js %}
 
 
-        <script>
 
-
-            $(function () {
-                $('.cmdb_del').click(function () {
-                    swal({
-
-                        title: "你确定删除",
-                        text: "你将无法恢复",
-                        type: "warning",
-                        showCancelButton: true,
-                        confirmButtonColor: "#DD6B55",
-                        confirmButtonText: "确定",
-                        closeOnConfirm: false
-                    }, function () {
-                        $.ajax({
-                            url: "/cmdb/cmdb-del.html",
-                            type: 'POST',
-                            data: {'nid': {{  nid }}},
-                            success: function (data) {
-
-                                var obj = JSON.parse(data);
-                                if (obj.status) {
-                                    swal({title: "删除", text: "已成功删除", type: "success"}, function () {
-                                        location.href = "{% url "cmdb:cmdb_list" %}"
-                                    })
-                                } else {
-                                    swal("错误", "删除" + "[ " + obj.error + " ]" + "遇到错误", "error");
-                                }
-                            }
-                        });
-
-
-                    });
-                });
-            });
-
-
-        </script>
 
 
     {% endblock %}

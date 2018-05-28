@@ -22,7 +22,7 @@ class assets(models.Model):
     ctime = models.DateField(verbose_name='入库时间')
     user = models.CharField(verbose_name='使用人',max_length=24,db_index=True,null=True,blank=True)
     otime = models.DateField(verbose_name='领（借）用时间',null=True,blank=True)
-    gtime = models.DateField(verbose_name='归还时间',null=True,blank=True)
+    gtime = models.DateField(verbose_name='归还(报废)时间',null=True,blank=True)
     class Meta:
         db_table = "assets"
         verbose_name = "固定资产"

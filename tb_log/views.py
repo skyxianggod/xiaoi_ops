@@ -60,9 +60,14 @@ def logcreate(request,**kwargs):
     if kw == 'o':
         str1=str(pk)+'在'+time.strftime("%Y-%m-%d",time.localtime(time.time()))+'被'+user+'借用'
 
+    if kw == 'u':
+        str1=str(pk)+'在'+time.strftime("%Y-%m-%d",time.localtime(time.time()))+'信息被修改'
+
     if kw == 'i':
         str1=str(pk)+'在'+time.strftime("%Y-%m-%d",time.localtime(time.time()))+'归还成功'
 
+    if kw == 'p':
+        str1=str(pk)+'在'+time.strftime("%Y-%m-%d",time.localtime(time.time()))+'报废'
     try:
         models.tb_log.objects.create(uid_id=pk,log_info=str1)
     except BaseException :
