@@ -119,7 +119,7 @@
                             </form>
                         <div>&nbsp;</div>
                             <form id="del_form_cmdb_all" class="form-horizontal  "
-                                  action="{% url "cmdb:cmdb_export" %}" method="post">
+                                  action="{% url "assets:assets_export" %}" method="post">
                                 {% csrf_token %}
 
 
@@ -166,7 +166,7 @@
 
                                 </table>
                                 <button class="btn btn-sm btn-primary" type="submit">导出</button>
-                                <a href="{% url "cmdb:cmdb_export" %}" class="btn btn-sm btn-primary ">导出全部</a>
+                                <a href="{% url "assets:assets_export" %}" class="btn btn-sm btn-primary ">导出全部</a>
                                 <div>
 
 

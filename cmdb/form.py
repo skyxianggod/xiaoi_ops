@@ -64,4 +64,4 @@ class CmdbForm(forms.ModelForm):
         }
 
 class FileForm(forms.Form):
-    file = forms.FileField(label="资产导入")
+    file = forms.FileField(label="导入")

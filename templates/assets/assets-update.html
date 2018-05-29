@@ -68,7 +68,7 @@
                                 {% bootstrap_field form.utype layout="horizontal" %}
 <div class="form-group has-success"><label class="col-md-3 control-label" for="id_usize">设备型号</label><div class="col-md-9">
 <select name="usize" class="form-control" title="" required id="id_usize">
-<option value="">---------</option>
+<option value="{{ obj.usize_id }}">{{ obj.usize }}</option>
 </select></div></div>
                                 {% bootstrap_field form.uconf layout="horizontal" %}
                                 {% bootstrap_field form.ctime layout="horizontal" %}
@@ -82,7 +82,7 @@
 
                                 {% bootstrap_button "保存" button_type="submit" button_class="btn-primary" %}
 
-                                <button class="btn btn-white" href="{{ i__next__ }}">取消</button>
+                                <a class="btn btn-white" onClick="javascript :history.back(-1);">取消</a>
                             </div>
                         </div>
                     </form>

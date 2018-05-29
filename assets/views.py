@@ -12,6 +12,7 @@ from .form import AssetsForm,AssetsForm_give,AssetsForm_in
 from django.core import serializers
 from django.db.models import Q
 from tb_log.models import tb_log
+from cmdb.form import FileForm
 
 class AssetsList(LoginRequiredMixin,ListView):
     template_name = 'assets/assets.html'
@@ -24,7 +25,7 @@ class AssetsList(LoginRequiredMixin,ListView):
     def get_context_data(self, *, object_list=None, **kwargs):
 
         search_data = self.request.GET.copy()
-        print(search_data)
+        # print(search_data)
         try:
             search_data.pop("page")
 
@@ -46,11 +47,13 @@ class AssetsList(LoginRequiredMixin,ListView):
     def get_queryset(self):
         if self.request.GET.get('name'):
             query = self.request.GET.get('name', None)
-            print(query)
+            # print(query)
             try:
                 queryset =super().get_queryset().filter(Q(user=query)|Q(uid=query)|Q(active_id=query)).order_by('active_id')
-            except BaseException:
-                queryset =super().get_queryset().filter(Q(user=query)).order_by('active_id')
+                # print('......')
+            except BaseException as e:
+                # print(e)
+                queryset =super().get_queryset().filter(Q(user=query)|Q(uid=query)).order_by('active_id')
         else:
             queryset = super().get_queryset()
         return queryset
@@ -213,6 +216,201 @@ def AssetsZtree(request):
         # print(i['id'])
         data.append({"id": i['id'], "pId": "1111", "name": i['name'], "page": "xx.action"}, )
     return HttpResponse(json.dumps(data), content_type='application/json')
+
+
+
+
+def excel_export(request):
+    '''文件导出'''
+    import xlwt
+    from io import BytesIO
+
+    if request.method == 'GET':
+        list_obj = assets.objects.all().order_by('utype_id','active_id')
+        style = xlwt.XFStyle()
+        style.num_format_str='M/D/YY'
+        if list_obj:
+            ws = xlwt.Workbook(encoding='utf-8')
+            w = ws.add_sheet(u'第一页数据')
+            w.write(0,0,u'资产编号')
+            w.write(0,1,u'资产类型')
+            w.write(0,2,u'资产型号')
+            w.write(0,3,u'资产配置')
+            w.write(0,4,u'入库时间')
+            w.write(0,5,u'资产状态')
+            w.write(0,6,u'使用人')
+            w.write(0,7,u'领（借）用时间')
+            w.write(0,8,u'报废（归还）时间')
+
+        excel_row = 1
+        for obj in list_obj:
+            w.write(excel_row,0,obj.uid)
+            w.write(excel_row,1,obj.utype.name)
+            w.write(excel_row,2,obj.usize.name)
+            w.write(excel_row,3,obj.uconf)
+            w.write(excel_row,4,obj.ctime,style)
+            w.write(excel_row,5,obj.active.name)
+            w.write(excel_row,6,obj.user)
+            w.write(excel_row,7,obj.gtime,style)
+            w.write(excel_row,8,obj.otime,style)
+            excel_row +=1
+
+        sio = BytesIO()
+        ws.save(sio)
+        sio.seek(0)
+        response = HttpResponse(sio.getvalue(), content_type='application/vnd.ms-excel')
+        # print(response)
+        # print(sio.getvalue())
+        response['Content-Disposition'] = 'attachment; filename=test.xls'
+        response.write(sio.getvalue())
+        return response
+
+
+    if request.method == 'POST':
+        ids = request.POST.getlist('id', None)
+
+        idstring = ''
+        #####################################
+        # '''使用weherw时字符串必须采用引号'''
+        if ids:
+            for i in ids:
+                if i.isdigit():
+                    idstring = idstring + str(i)+','
+                else:
+                    idstring = idstring+'\''+ str(i) +'\''+','
+        idstring_new=idstring[0:-2]
+        #######################################
+        # idstring = ','.join(ids)
+        qs = assets.objects.extra(where=['uid IN (' + idstring_new + ')']).all().order_by('utype_id','active_id')
+        # print(qs)
+        # print('uid IN (' + idstring + ')')
+        style = xlwt.XFStyle()
+        style.num_format_str='M/D/YY'
+
+        ws = xlwt.Workbook(encoding='utf-8')
+        w = ws.add_sheet(u'第一页数据')
+        w.write(0,0,u'资产编号')
+        w.write(0,1,u'资产类型')
+        w.write(0,2,u'资产型号')
+        w.write(0,3,u'资产配置')
+        w.write(0,4,u'入库时间')
+        w.write(0,5,u'资产状态')
+        w.write(0,6,u'使用人')
+        w.write(0,7,u'领（借）用时间')
+        w.write(0,8,u'报废（归还）时间')
+        if qs:
+            excel_row = 1
+            for obj in qs:
+                w.write(excel_row,0,obj.uid)
+                w.write(excel_row,1,obj.utype.name)
+                w.write(excel_row,2,obj.usize.name)
+                w.write(excel_row,3,obj.uconf)
+                w.write(excel_row,4,obj.ctime,style)
+                w.write(excel_row,5,obj.active.name)
+                w.write(excel_row,6,obj.user)
+                w.write(excel_row,7,obj.gtime,style)
+                w.write(excel_row,8,obj.otime,style)
+                excel_row +=1
+
+        sio = BytesIO()
+        ws.save(sio)
+        sio.seek(0)
+        response = HttpResponse(sio.getvalue(), content_type='application/vnd.ms-excel')
+        # print(response)
+        # print(sio.getvalue())
+        response['Content-Disposition'] = 'attachment; filename=test.xls'
+        response.write(sio.getvalue())
+        return response
+
+
+def AssetsImport(request):
+
+    """
+    资产导入    """
+    import  xlrd
+    form = FileForm()
+    if request.method == "POST":
+        form = FileForm(request.POST, request.FILES)
+        if form.is_valid():
+            wb =xlrd.open_workbook(
+                filename=None,file_contents=request.FILES['file'].read())
+            table = wb.sheets()[0]
+            row = table.nrows
+            for i in range(1,row):
+                col = table.row_values(i)
+                print(col)
+        return  HttpResponse('200')
+
+    return render(request, 'assets/assets-import.html', {'form': form })
+    #         f = form.cleaned_data['file']
+    #
+    #         det_result = chardet.detect(f.read())
+    #         print(det_result,codecs.BOM_UTF8.decode())
+    #         f.seek(0)  # reset file seek index
+    #
+    #         file_data = f.read().decode(det_result['encoding']).strip(codecs.BOM_UTF8.decode())
+    #
+    #         csv_file = StringIO(file_data)
+    #         reader = csv.reader(csv_file)
+    #         csv_data = [row for row in reader]
+    #
+    #         fields = [
+    #             field for field in cmdb._meta.fields
+    #         ]
+    #
+    #         header_ = csv_data[0]
+    #         mapping_reverse = {field.verbose_name: field.name for field in fields}
+    #         attr = [mapping_reverse.get(n, None) for n in header_]
+    #
+    #         created, updated, failed = [], [], []
+    #
+    #
+    #         for row in csv_data[1:]:
+    #             if set(row) == {''}:
+    #                 continue
+    #             asset_dict = dict(zip(attr, row))
+    #             asset_dict_id = dict(zip(attr, row))
+    #             ids = asset_dict['id']
+    #             id_ = asset_dict.pop('id', 0)
+    #             asset1 = cmdb.objects.filter(id=ids)  ##判断ID 是否存在
+    #
+    #             if not asset1:
+    #                 try:
+    #                     if len(cmdb.objects.filter(hostname=asset_dict.get('hostname'))):
+    #                         raise Exception(('already exists'))
+    #                     cmdb.objects.create(**asset_dict_id)
+    #                     created.append(asset_dict['hostname'])
+    #                 except Exception as e:
+    #                     failed.append('%s: %s' % (asset_dict['hostname'], str(e)))
+    #
+    #             else:
+    #                 for k, v in asset_dict.items():
+    #                     if v:
+    #                         setattr(cmdb, k, v)
+    #                 try:
+    #                     cmdb.objects.filter(id=ids).update(**asset_dict)
+    #                     updated.append(asset_dict['hostname'])
+    #                 except Exception as e:
+    #                     failed.append('%s: %s' % (asset_dict['hostname'], str(e)))
+    #
+    #         data = {
+    #             'created': created,
+    #             'created_info': 'Created {}'.format(len(created)),
+    #             'updated': updated,
+    #             'updated_info': 'Updated {}'.format(len(updated)),
+    #             'failed': failed,
+    #             'failed_info': 'Failed {}'.format(len(failed)),
+    #             'valid': True,
+    #             'msg': 'Created: {}. Updated: {}, Error: {}'.format(
+    #                 len(created), len(updated), len(failed))
+    #         }
+    #
+    #         return render(request, 'cmdb/cmdb-import.html', {'form': form,
+    #                                                            "msg": data})
+    #
+    # return render(request, 'cmdb/cmdb-import.html', {'form': form })
+    #
+    #
 
 
 

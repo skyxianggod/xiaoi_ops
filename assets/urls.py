@@ -17,4 +17,6 @@ urlpatterns = [
     path('assets-add-update-p-<pk>.html', views.AssetsUpdatein.as_view(), name='assets_update_p'),
     path('getdata.html', views.getdata, name='getdate'),
     path('assets-ztree.html', views.AssetsZtree, name='assets_ztree'),
+    path('assets-export.html', views.excel_export, name='assets_export'),
+    path('assets-import.html',views.AssetsImport,name='assets_import'),
 ]
