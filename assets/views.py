@@ -1,5 +1,6 @@
 from django.shortcuts import render,get_object_or_404,HttpResponseRedirect
 import time,json
+
 import re
 # Create your views here.
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -69,9 +70,9 @@ class AssetsAdd(LoginRequiredMixin, CreateView):
     # success_url = reverse_lazy('assets:assets_list')
 
     def post(self, request, *args, **kwargs):
-        print(self.request.POST)
+        # print(self.request.POST)
         pk=request.POST['uid']
-        print(pk)
+        # print(pk)
         self.success_url=reverse_lazy('tb_log:tb_log_create',kwargs={'pk':pk,'kw':'c','user':'c'})
         return super().post(request, *args, **kwargs)
 
@@ -82,9 +83,9 @@ class AssetsUpdateDtail(LoginRequiredMixin, UpdateView):
     context_object_name = 'obj'
     # success_url = reverse_lazy('assets:assets_list')
     def post(self, request, *args, **kwargs):
-        print(self.request.POST)
+        # print(self.request.POST)
         pk=request.POST['uid']
-        print(pk)
+        # print(pk)
         self.success_url=reverse_lazy('tb_log:tb_log_create',kwargs={'pk':pk,'kw':'u','user':'c'})
         return super().post(request, *args, **kwargs)
 
@@ -93,7 +94,7 @@ def getdata(request):
     plat = get_object_or_404(platform, pk=pk)
     size = plat.platform_size_set.all()
     data = serializers.serialize('json', size)
-    print(data)
+    # print(data)
     return HttpResponse(data, content_type='application/json')
 
 
@@ -230,17 +231,28 @@ def excel_export(request):
         style = xlwt.XFStyle()
         style.num_format_str='M/D/YY'
         if list_obj:
+            fields = [field for field in assets._meta.fields]
+            print(fields)
+
+            header = [field.verbose_name for field in fields]
             ws = xlwt.Workbook(encoding='utf-8')
             w = ws.add_sheet(u'第一页数据')
-            w.write(0,0,u'资产编号')
-            w.write(0,1,u'资产类型')
-            w.write(0,2,u'资产型号')
-            w.write(0,3,u'资产配置')
-            w.write(0,4,u'入库时间')
-            w.write(0,5,u'资产状态')
-            w.write(0,6,u'使用人')
-            w.write(0,7,u'领（借）用时间')
-            w.write(0,8,u'报废（归还）时间')
+            w.write(0, 0, header[0])
+            w.write(0, 1, header[1])
+            w.write(0, 2, header[2])
+            w.write(0, 3, header[3])
+            w.write(0, 4, header[4])
+            w.write(0, 5, header[5])
+            w.write(0, 6, header[6])
+            w.write(0, 7, header[7])
+            w.write(0, 8, header[8])
+            w.write(0, 9, header[9])
+            w.write(0, 10, header[10])
+            w.write(0, 11, header[11])
+            w.write(0, 12, header[12])
+            w.write(0, 13, header[13])
+            w.write(0, 14, header[14])
+
 
         excel_row = 1
         for obj in list_obj:
@@ -248,11 +260,18 @@ def excel_export(request):
             w.write(excel_row,1,obj.utype.name)
             w.write(excel_row,2,obj.usize.name)
             w.write(excel_row,3,obj.uconf)
-            w.write(excel_row,4,obj.ctime,style)
-            w.write(excel_row,5,obj.active.name)
+            w.write(excel_row, 4, obj.active.name)
+            w.write(excel_row, 5, obj.ctime, style)
             w.write(excel_row,6,obj.user)
             w.write(excel_row,7,obj.gtime,style)
             w.write(excel_row,8,obj.otime,style)
+            w.write(excel_row, 9, obj.sn)
+            w.write(excel_row, 10, obj.addr)
+            w.write(excel_row, 11, obj.pid)
+            w.write(excel_row, 12, obj.nmac)
+            w.write(excel_row, 13, obj.wmac)
+            w.write(excel_row, 14, obj.ps)
+
             excel_row +=1
 
         sio = BytesIO()
@@ -289,15 +308,26 @@ def excel_export(request):
 
         ws = xlwt.Workbook(encoding='utf-8')
         w = ws.add_sheet(u'第一页数据')
-        w.write(0,0,u'资产编号')
-        w.write(0,1,u'资产类型')
-        w.write(0,2,u'资产型号')
-        w.write(0,3,u'资产配置')
-        w.write(0,4,u'入库时间')
-        w.write(0,5,u'资产状态')
-        w.write(0,6,u'使用人')
-        w.write(0,7,u'领（借）用时间')
-        w.write(0,8,u'报废（归还）时间')
+        fields = [field for field in assets._meta.fields]
+        # print(fields)
+
+        header = [field.verbose_name for field in fields]
+        # print(header)
+        w.write(0, 0, header[0])
+        w.write(0, 1, header[1])
+        w.write(0, 2, header[2])
+        w.write(0, 3, header[3])
+        w.write(0, 4, header[4])
+        w.write(0, 5, header[5])
+        w.write(0, 6, header[6])
+        w.write(0, 7, header[7])
+        w.write(0, 8, header[8])
+        w.write(0, 9, header[9])
+        w.write(0, 10, header[10])
+        w.write(0, 11, header[11])
+        w.write(0, 12, header[12])
+        w.write(0, 13, header[13])
+        w.write(0, 14, header[14])
         if qs:
             excel_row = 1
             for obj in qs:
@@ -305,11 +335,17 @@ def excel_export(request):
                 w.write(excel_row,1,obj.utype.name)
                 w.write(excel_row,2,obj.usize.name)
                 w.write(excel_row,3,obj.uconf)
-                w.write(excel_row,4,obj.ctime,style)
-                w.write(excel_row,5,obj.active.name)
+                w.write(excel_row, 4, obj.active.name)
+                w.write(excel_row, 5, obj.ctime, style)
                 w.write(excel_row,6,obj.user)
                 w.write(excel_row,7,obj.gtime,style)
                 w.write(excel_row,8,obj.otime,style)
+                w.write(excel_row, 9, obj.sn)
+                w.write(excel_row, 10, obj.addr)
+                w.write(excel_row, 11, obj.pid)
+                w.write(excel_row, 12, obj.nmac)
+                w.write(excel_row, 13, obj.wmac)
+                w.write(excel_row, 14, obj.ps)
                 excel_row +=1
 
         sio = BytesIO()
@@ -328,20 +364,125 @@ def AssetsImport(request):
     """
     资产导入    """
     import  xlrd
+    from datetime import datetime
+    from xlrd import xldate_as_tuple
+    fields = [field for field in assets._meta.fields]
+    # print(fields)
+
+    # header = [field.verbose_name for field in fields]
+    # print(header)
+    created, updated, failed = [], [], []
+    mapping_reverse = [field.name for field in fields]
+    # print(mapping_reverse)
+
+    # type_all = platform.objects.all()
+    # type_dict = {}
+    # size_dict = {}
+    # for i in type_all:
+    #     type_dict[i.name]=i.id
+    #     size_id_all = platform_size.objects.filter(platform__id=i.id)
+    #     size_dict[i.id]=dict(zip([x.name for x in size_id_all],[x.id for x in size_id_all]))
+    # print(type_dict)
+    # print(size_dict)
+
     form = FileForm()
     if request.method == "POST":
         form = FileForm(request.POST, request.FILES)
         if form.is_valid():
-            wb =xlrd.open_workbook(
-                filename=None,file_contents=request.FILES['file'].read())
+            wb = xlrd.open_workbook(encoding_override='utf-8', filename=None,
+                                    file_contents=request.FILES['file'].read())
             table = wb.sheets()[0]
-            row = table.nrows
+            row = table.nrows  # 数据的行数
             for i in range(1,row):
                 col = table.row_values(i)
-                print(col)
-        return  HttpResponse('200')
+                if set(col) == {''}:
+                    continue
+                else:
+                    try:
+                        col[1] = platform.objects.get(name=col[1])
+                        col[2] = platform_size.objects.get(name=col[2], platform=col[1])
+                        col[4] = active.objects.get(name=col[4])
+                        for y in range(len(col)):
+                            if table.cell(i, y).ctype == 3:
+                                date = datetime(*xldate_as_tuple(col[y], 0))
+                                col[y] = date.strftime('%Y-%m-%d')
+                            if table.cell(i, y).ctype == 0:
+                                col[y] = None
 
-    return render(request, 'assets/assets-import.html', {'form': form })
+                        assets_au = dict(zip(mapping_reverse, col))
+                    except:
+                        return HttpResponse('导入文件格式错误')
+                    # print(assets_au)
+                    if assets.objects.filter(uid=col[0]):
+                        try:
+                            assets.objects.filter(uid=col[0]).update(**assets_au)
+                        except BaseException as e:
+                            failed.append('%s: %s' % (col[0], str(e)))
+                        updated.append('%s' % (col[0]))
+                        str1 = str(col[0]) + '在' + time.strftime("%Y-%m-%d", time.localtime(time.time())) + '导入更新成功'
+                        tb_log.objects.create(uid_id=col[0], log_info=str1)
+
+                    else:
+                        try:
+                            assets.objects.create(**assets_au)
+                        except BaseException:
+                            failed.append('%s: %s' % (col[0], str(e)))
+
+                        created.append('%s' % (col[0]))
+                        str1 = str(col[0]) + '在' + time.strftime("%Y-%m-%d", time.localtime(time.time())) + '导入创建成功'
+                        tb_log.objects.create(uid_id=col[0], log_info=str1)
+
+            data = {
+                'created': created,
+                'created_info': 'Created {}'.format(len(created)),
+                'updated': updated,
+                'updated_info': 'Updated {}'.format(len(updated)),
+                'failed': failed,
+                'failed_info': 'Failed {}'.format(len(failed)),
+                'valid': True,
+                'msg': 'Created: {}. Updated: {}, Error: {}'.format(
+                        len(created), len(updated), len(failed))
+            }
+
+            return render(request, 'assets/assets-import.html', {'form': form, "msg": data, "assets_class": 'active'})
+
+    return render(request, 'assets/assets-import.html', {'form': form, "assets_class": 'active'})
+
+
+
+
+
+
+
+    # if table.cell(i, 5).ctype==3:
+    #     date = datetime(*xldate_as_tuple(col[5], 0))
+    #     col[5] = date.strftime('%Y-%d-%m')
+    #
+    # if table.cell(i, 7).ctype==3:
+    #     date = datetime(*xldate_as_tuple(col[7], 0))
+    #     col[7] = date.strftime('%Y-%d-%m')
+    #
+    # if table.cell(i, 8).ctype==3:
+    #     date = datetime(*xldate_as_tuple(col[8], 0))
+    #     col[8] = date.strftime('%Y-%d-%m')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    # asset1 = assets.objects.filter(id=col[0])
+    # if asset1:
+    #     raise
+
     #         f = form.cleaned_data['file']
     #
     #         det_result = chardet.detect(f.read())

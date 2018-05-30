@@ -122,8 +122,8 @@ USE_L10N = False
 
 USE_TZ = False  # 如果只是内部使用的系统，这行建议为false，不然会有时区问题
 
-DATETIME_FORMAT = 'Y/m/d'
-DATE_FORMAT = 'Y/m/d'
+DATETIME_FORMAT = 'Y-m-d'
+DATE_FORMAT = 'Y-m-d'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.0/howto/static-files/

@@ -10,11 +10,13 @@ class AssetsForm(forms.ModelForm):
     class Meta:
         model = assets
         # fields = '__all__'
-        fields = ['uid','utype','usize','uconf','ctime',
-        ]
+        fields = ['uid', 'utype', 'usize', 'uconf', 'ctime', 'addr', 'ps', 'sn', 'pid', 'nmac', 'wmac',
+                  ]
 
 
         widgets = {
+            'ps': forms.Textarea(
+                    attrs={'cols': 80, 'rows': 3}),
 
 
             'uconf': forms.Textarea(
@@ -52,15 +54,13 @@ class AssetsForm_give(forms.ModelForm):
     class Meta:
         model = assets
         # fields = '__all__'
-        fields = ['otime','user','active','gtime',
-        ]
+        fields = ['otime', 'user', 'active', 'gtime', 'addr', 'ps'
+                  ]
 
 
         widgets = {
-            'uconf': forms.Textarea(
+            'ps': forms.Textarea(
                 attrs={'cols': 80, 'rows': 3}),
-            # 'utpye': forms.ModelChoiceField(
-            #     attrs={'id': 'utype_id',}),
 
             'otime': forms.DateInput(
                 attrs={'type': 'date','required':'True'}
@@ -85,7 +85,7 @@ class AssetsForm_in(forms.ModelForm):
 
 
         widgets = {
-            'uconf': forms.Textarea(
+            'ps': forms.Textarea(
                 attrs={'cols': 80, 'rows': 3}),
             # 'utpye': forms.ModelChoiceField(
             #     attrs={'id': 'utype_id',}),

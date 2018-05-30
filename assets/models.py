@@ -23,6 +23,17 @@ class assets(models.Model):
     user = models.CharField(verbose_name='使用人',max_length=24,db_index=True,null=True,blank=True)
     otime = models.DateField(verbose_name='领（借）用时间',null=True,blank=True)
     gtime = models.DateField(verbose_name='归还(报废)时间',null=True,blank=True)
+    sn = models.CharField(verbose_name='SN号', max_length=24, null=True, blank=True)
+    addr = models.CharField(verbose_name='存放地点', max_length=24, null=True, blank=True, default='库房')
+    pid = models.CharField(verbose_name='设备号', max_length=24, null=True, blank=True)
+    nmac = models.CharField(verbose_name='有线mac', max_length=24, null=True, blank=True)
+    wmac = models.CharField(verbose_name='无线mac', max_length=24, null=True, blank=True)
+    ps = models.CharField(verbose_name='备注', max_length=24, null=True, blank=True)
+
+
+
+
+
     class Meta:
         db_table = "assets"
         verbose_name = "固定资产"
