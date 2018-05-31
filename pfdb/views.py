@@ -15,6 +15,13 @@ class PlatfromList(ListView,LoginRequiredMixin):
     paginate_by = settings.DISPLAY_PER_PAGE
     context_object_name = 'pfdb_list'
 
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = {
+            "platform_class": 'active',
+        }
+        kwargs.update(context)
+        return super().get_context_data(**kwargs)
+
 class PlatfromCreat(LoginRequiredMixin,CreateView):
     model = pfdb
     success_url = reverse_lazy('pfdb:pfdb_list')

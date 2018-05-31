@@ -123,7 +123,7 @@ class AssetsUpdate(LoginRequiredMixin,UpdateView):
 
     def post(self, request, *args, **kwargs):
 
-        pk = self.request.path.split('.')[0].split('-')[-1]
+
         # print(pk)
 
         # print(reverse_lazy('tb_log:tb_log_create',kwargs={'pk':pk,}))
@@ -132,6 +132,7 @@ class AssetsUpdate(LoginRequiredMixin,UpdateView):
         b=self.request.path
         a=self.request.POST.copy()
         ret=re.search('-g-',b)
+        pk = self.request.path.split('.html')[0].split('-')[-1]
 
         user = self.request.POST['user']
         if assets.objects.get(uid=pk).active_id==1:
@@ -158,9 +159,10 @@ class AssetsUpdatein(LoginRequiredMixin,UpdateView):
 
     def post(self, request, *args, **kwargs):
         b=self.request.path
-        pk = self.request.path.split('.')[0].split('-')[-1]
+        ret = re.search('-i-', b)
+        pk = self.request.path.split('.html')[0].split('-')[-1]
         a=self.request.POST.copy()
-        ret=re.search('-i-',b)
+
         if ret :
             a['active']=1
             a['user']=''
@@ -186,7 +188,7 @@ def repair(request,**kwargs):
 
     if request.method == 'POST':
 
-        pk = request.path.split('.')[0].split('-')[-1]
+        pk = request.path.split('.html')[0].split('-')[-1]
         str_id = request.POST['wx']
 
         if assets.objects.get(uid=pk).active_id==1:
@@ -408,6 +410,9 @@ def AssetsImport(request):
                                 col[y] = date.strftime('%Y-%m-%d')
                             if table.cell(i, y).ctype == 0:
                                 col[y] = None
+
+                            if table.cell(i, y).ctype == 2:
+                                col[y] = int(col[y])
 
                         assets_au = dict(zip(mapping_reverse, col))
                     except:

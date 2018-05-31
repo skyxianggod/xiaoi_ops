@@ -42,9 +42,16 @@
                     <li><a href="{% url "base_info:platform_list" %}">设备管理</a></li>
                 </ul>
             </li>
+            <li class="{{ platform_class }}">
+                <a href="#"><i class="fa fa-inbox"></i> <span class="nav-label">平台管理</span>
+                    <span class="fa arrow"> </span></a>
+                <ul class="nav nav-second-level">
+                    <li><a href="{% url "pfdb:pfdb_list" %}">平台信息</a></li>
+                </ul>
+            </li>
 
                     <li class="{{ assets_class }}">
-                <a href="#"><i class="fa fa-inbox"></i> <span class="nav-label">资产管理</span>
+                        <a href="#"><i class="fa fa-inbox"></i> <span class="nav-label">内网资产管理</span>
                     <span class="fa arrow"> </span></a>
                 <ul class="nav nav-second-level">
                     <li ><a href="{% url "assets:assets_list" %}">固资管理</a></li>
@@ -66,25 +73,14 @@
             </li>
 
 
-            <li class="{{ platform_class }}">
-                <a href="#"><i class="fa fa-inbox"></i> <span class="nav-label">平台管理</span>
-                    <span class="fa arrow"> </span></a>
-                <ul class="nav nav-second-level">
-                    <li ><a href="{% url "pfdb:pfdb_list" %}">平台信息</a></li>
-                </ul>
-            </li>
-
-
-
-
-            <li>
-                <a href="#"><i class="fa fa-inbox"></i> <span class="nav-label">管理</span>
-                    <span class="fa arrow"> </span></a>
-                <ul class="nav nav-second-level">
-
-                    <li ><a href="{% url "pfdb:pfdb_list" %}">后台管理</a></li>
-                </ul>
-            </li>
+            {#            <li>#}
+            {#                <a href="#"><i class="fa fa-inbox"></i> <span class="nav-label">管理</span>#}
+            {#                    <span class="fa arrow"> </span></a>#}
+            {#                <ul class="nav nav-second-level">#}
+            {##}
+            {#                    <li ><a href="{% url "pfdb:pfdb_list" %}">后台管理</a></li>#}
+            {#                </ul>#}
+            {#            </li>#}
 
         </ul>
 

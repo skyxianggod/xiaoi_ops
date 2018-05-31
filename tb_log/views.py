@@ -47,9 +47,9 @@ class LogView(ListView):
 def logcreate(request,**kwargs):
     if request.method == "GET":
         a=request.path
-        user = a.split('.')[0].split('-')[-1]
-        pk = a.split('.')[0].split('-')[-2]
-        kw = a.split('.')[0].split('-')[1]
+        user = a.split('.html')[0].split('-')[-1]
+        pk = a.split('.html')[0].split('-')[-2]
+        kw = a.split('.html')[0].split('-')[1]
         print(pk,kw)
     if kw == 'c':
         str1=str(pk)+'在'+time.strftime("%Y-%m-%d",time.localtime(time.time()))+'被录入'
@@ -68,6 +68,8 @@ def logcreate(request,**kwargs):
 
     if kw == 'p':
         str1=str(pk)+'在'+time.strftime("%Y-%m-%d",time.localtime(time.time()))+'报废'
+
+    print(pk, str1)
     try:
         models.tb_log.objects.create(uid_id=pk,log_info=str1)
     except BaseException :

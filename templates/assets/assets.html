@@ -62,13 +62,66 @@
                 <div class="ibox float-e-margins">
                     <div class="ibox-content mailbox-content" style="padding-top: 0">
                         <div class="file-manager ">
-
                             <div class="clearfix">
                                 <div data-options="iconCls:'icon-save'" title="ztree事件">
-                                    <ul id="ztree4" class="ztree"></ul>
+                                    <ul id="ztree4" class="ztree">
+                                        <li id="ztree4_1" class="level0" tabindex="0" hidefocus="true" treenode=""><span
+                                                id="ztree4_1_switch" title="" class="button level0 switch root_open"
+                                                treenode_switch=""></span><a id="ztree4_1_a" class="level0"
+                                                                             treenode_a="" onclick="" target="_blank"
+                                                                             style="" title="项目"><span id="ztree4_1_ico"
+                                                                                                       title=""
+                                                                                                       treenode_ico=""
+                                                                                                       class="button ico_open"
+                                                                                                       style=""></span><span
+                                                id="ztree4_1_span" class="node_name">项目</span></a>
+                                            <ul id="ztree4_1_ul" class="level0 " style="">
+                                                <li id="ztree4_2" class="level1" tabindex="0" hidefocus="true"
+                                                    treenode=""><span id="ztree4_2_switch" title=""
+                                                                      class="button level1 switch center_docu"
+                                                                      treenode_switch=""></span><a id="ztree4_2_a"
+                                                                                                   class="level1"
+                                                                                                   treenode_a=""
+                                                                                                   onclick=""
+                                                                                                   target="_blank"
+                                                                                                   style=""
+                                                                                                   title="网站(106)"><span
+                                                        id="ztree4_2_ico" title="" treenode_ico=""
+                                                        class="button ico_docu" style=""></span><span id="ztree4_2_span"
+                                                                                                      class="node_name">网站(106)</span></a>
+                                                </li>
+                                                <li id="ztree4_3" class="level1" tabindex="0" hidefocus="true"
+                                                    treenode=""><span id="ztree4_3_switch" title=""
+                                                                      class="button level1 switch center_docu"
+                                                                      treenode_switch=""></span><a id="ztree4_3_a"
+                                                                                                   class="level1"
+                                                                                                   treenode_a=""
+                                                                                                   onclick=""
+                                                                                                   target="_blank"
+                                                                                                   style=""
+                                                                                                   title="开发(0)"><span
+                                                        id="ztree4_3_ico" title="" treenode_ico=""
+                                                        class="button ico_docu" style=""></span><span id="ztree4_3_span"
+                                                                                                      class="node_name">开发(0)</span></a>
+                                                </li>
+                                                <li id="ztree4_4" class="level1" tabindex="0" hidefocus="true"
+                                                    treenode=""><span id="ztree4_4_switch" title=""
+                                                                      class="button level1 switch bottom_docu"
+                                                                      treenode_switch=""></span><a id="ztree4_4_a"
+                                                                                                   class="level1"
+                                                                                                   treenode_a=""
+                                                                                                   onclick=""
+                                                                                                   target="_blank"
+                                                                                                   style=""
+                                                                                                   title="测试(1)"><span
+                                                        id="ztree4_4_ico" title="" treenode_ico=""
+                                                        class="button ico_docu" style=""></span><span id="ztree4_4_span"
+                                                                                                      class="node_name">测试(1)</span></a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                    </ul>
                                 </div>
-
-
                             </div>
                         </div>
                     </div>
@@ -211,7 +264,7 @@
                                                     下一页 </a></li>
                                         {% endif %}
                                         <li>
-                                            <a href="{% url "assets:assets_list" %}?page={{ page_obj.paginator.num_pages }}">尾页 </a>
+                                            <a href="{% url "assets:assets_list" %}?page={{ page_obj.paginator.num_pages }}&{{ search_data }}">尾页 </a>
                                         </li>
                                         <li><span
                                                 style="color: #0a0a0a">总: &nbsp;{{ page_obj.paginator.num_pages }} 页 </span>
