@@ -6,6 +6,7 @@ from django.contrib.auth import authenticate,login
 
 @login_required(login_url="login.html")
 def index(request):
+
     return  render(request,'index/index.html',)
 
 
@@ -28,3 +29,8 @@ def login_view(request):
         else:
             return render(request, 'index/login.html',
                           {'error_msg': error_msg1, })
+
+
+def logout_view(request):
+    request.session.clear()
+    return redirect('/login.html')

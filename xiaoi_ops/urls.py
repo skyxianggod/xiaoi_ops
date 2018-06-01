@@ -16,13 +16,14 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path,include
 
-from index.views import login_view,index
+from index.views import login_view, index, logout_view
 
 urlpatterns = [
     path('admin/', admin.site.urls,name='admin'),
     path('',index),
     path('index.html',index,name='index'),
     path('login.html',login_view),
+    path('logout.html', logout_view, name='logout'),
     path('cmdb/', include('cmdb.urls', namespace="cmdb", ), ),
     path('pfdb/',include('pfdb.urls',namespace="pfdb")),
     path('gzdb/', include('gzdb.urls', namespace="gzdb")),
