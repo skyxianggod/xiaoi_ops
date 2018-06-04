@@ -28,6 +28,6 @@ urlpatterns = [
     path('pfdb/',include('pfdb.urls',namespace="pfdb")),
     path('gzdb/', include('gzdb.urls', namespace="gzdb")),
     path('base_info/', include('base_info.urls', namespace="base_info")),
-    path('asstes/',include('assets.urls',namespace="asssts")),
+    path('assets/', include('assets.urls', namespace="assets")),
     path('tb_log/',include('tb_log.urls',namespace="tb_log")),
 ]

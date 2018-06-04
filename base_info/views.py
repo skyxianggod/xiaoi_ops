@@ -1,14 +1,15 @@
 import json
-from django.shortcuts import render
+
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Q
 from django.http import HttpResponse
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, ListView, UpdateView, View
 
 from xiaoi_ops import settings
 from .form import *
-from django.db.models import Q
 from .models import *
+
 
 # 人员管理视图
 # Create your views here.
@@ -90,6 +91,7 @@ class PersonDel(LoginRequiredMixin, View):
             ret['error'] = '删除错误'.format(e)
         finally:
             return HttpResponse(json.dumps(ret))
+
 
 def PersonZtree(request):
     """
@@ -252,7 +254,7 @@ class ShopDel(LoginRequiredMixin, View):
 
 #设备类型视图
 #
-class PlatformList(ListView):
+class PlatformList(ListView, LoginRequiredMixin):
     template_name = 'base_info/platform/platform.html'
     context_object_name = "dic_list"
     paginate_by = settings.DISPLAY_PER_PAGE

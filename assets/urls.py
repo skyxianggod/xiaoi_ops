@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 from django.urls import path
+
 from assets import views
 
 app_name = 'assets'
@@ -19,4 +20,5 @@ urlpatterns = [
     path('assets-ztree.html', views.AssetsZtree, name='assets_ztree'),
     path('assets-export.html', views.excel_export, name='assets_export'),
     path('assets-import.html',views.AssetsImport,name='assets_import'),
+    path('assets-count.html', views.assets_count, name='assets_count'),
 ]

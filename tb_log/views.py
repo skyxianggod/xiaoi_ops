@@ -1,20 +1,25 @@
-from django.shortcuts import render,HttpResponse,HttpResponseRedirect
 import time
+
+from django.shortcuts import HttpResponse, HttpResponseRedirect
 from django.urls import reverse_lazy
+
 # from assets.urls import *
 # Create your views here.
 from django.views.generic import  ListView
 from tb_log import models
 from xiaoi_ops import  settings
 from django.db.models import Q
+from django.contrib.auth.mixins import LoginRequiredMixin
 
-class LogView(ListView):
+
+class LogView(LoginRequiredMixin, ListView):
     template_name = 'assets/tb_log.html'
     model = models.tb_log
     context_object_name = 'log_list'
     paginate_by = settings.DISPLAY_PER_PAGE
     ordering = ("id")
     def get_queryset(self):
+
         if self.request.GET.get('name'):
             query = self.request.GET.get('name', None)
             # print(query)
@@ -42,7 +47,6 @@ class LogView(ListView):
         }
         kwargs.update(context)
         return super().get_context_data(**kwargs)
-
 
 def logcreate(request,**kwargs):
     if request.method == "GET":

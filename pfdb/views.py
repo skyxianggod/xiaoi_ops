@@ -1,10 +1,10 @@
-from django.shortcuts import render,HttpResponse
 import json
 
+from django.shortcuts import HttpResponse
 # Create your views here.
 from xiaoi_ops import settings
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import CreateView,TemplateView,ListView,View,UpdateView
+from django.views.generic import CreateView, ListView, View, UpdateView
 from .models import pfdb
 from .form import PfdbFrom
 from django.urls import reverse_lazy
@@ -14,6 +14,7 @@ class PlatfromList(ListView,LoginRequiredMixin):
     template_name = 'pfdb/pfdb.html'
     paginate_by = settings.DISPLAY_PER_PAGE
     context_object_name = 'pfdb_list'
+    ordering = 'id'
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = {

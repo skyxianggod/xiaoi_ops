@@ -1,12 +1,13 @@
-from django.shortcuts import render,get_object_or_404,HttpResponseRedirect
-import time,json
-
+import json
 import re
+import time
+
+from django.shortcuts import render,get_object_or_404,HttpResponseRedirect
 # Create your views here.
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponse
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, ListView, UpdateView, View,DetailView
+from django.views.generic import CreateView, ListView, UpdateView, DetailView
 from xiaoi_ops import settings
 from  .models import *
 from .form import AssetsForm,AssetsForm_give,AssetsForm_in
@@ -452,6 +453,23 @@ def AssetsImport(request):
             return render(request, 'assets/assets-import.html', {'form': form, "msg": data, "assets_class": 'active'})
 
     return render(request, 'assets/assets-import.html', {'form': form, "assets_class": 'active'})
+
+
+def assets_count(request):
+    if request.method == 'GET':
+        Uplatform = platform.objects.all()
+        print(Uplatform)
+        for i in Uplatform:
+            Uplatform_size = platform_size.objects.filter(platform=i)
+            print(Uplatform_size)
+            for x in Uplatform_size:
+                c = assets.objects.filter(utype=i, usize=x).count()
+                print({i: {x: c}})
+        return HttpResponse('200')
+
+
+
+
 
 
 
