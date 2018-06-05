@@ -9,7 +9,8 @@ from .models import pfdb
 from .form import PfdbFrom
 from django.urls import reverse_lazy
 
-class PlatfromList(ListView,LoginRequiredMixin):
+
+class PlatfromList(LoginRequiredMixin, ListView):
     model = pfdb
     template_name = 'pfdb/pfdb.html'
     paginate_by = settings.DISPLAY_PER_PAGE

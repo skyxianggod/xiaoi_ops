@@ -22,7 +22,7 @@ urlpatterns = [
     path('admin/', admin.site.urls,name='admin'),
     path('',index),
     path('index.html',index,name='index'),
-    path('login.html',login_view),
+    path('login.html', login_view, name='login'),
     path('logout.html', logout_view, name='logout'),
     path('cmdb/', include('cmdb.urls', namespace="cmdb", ), ),
     path('pfdb/',include('pfdb.urls',namespace="pfdb")),

@@ -134,3 +134,4 @@ STATICFILES_DIRS = (
 )
 
 DISPLAY_PER_PAGE = 20
+LOGIN_URL = '/login.html'

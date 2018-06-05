@@ -15,6 +15,7 @@ from django.core import serializers
 from django.db.models import Q
 from tb_log.models import tb_log
 from cmdb.form import FileForm
+from django.contrib.auth.decorators import login_required
 
 class AssetsList(LoginRequiredMixin,ListView):
     template_name = 'assets/assets.html'
@@ -90,6 +91,8 @@ class AssetsUpdateDtail(LoginRequiredMixin, UpdateView):
         self.success_url=reverse_lazy('tb_log:tb_log_create',kwargs={'pk':pk,'kw':'u','user':'c'})
         return super().post(request, *args, **kwargs)
 
+
+@login_required(login_url="login.html")
 def getdata(request):
     pk = request.GET['pk']
     plat = get_object_or_404(platform, pk=pk)
@@ -181,7 +184,7 @@ class AssetsUpdatein(LoginRequiredMixin,UpdateView):
         return super().post(request, *args, **kwargs)
 
 
-
+@login_required
 def repair(request,**kwargs):
     '''维修资产'''
     if request.method == 'GET':
@@ -207,6 +210,7 @@ def repair(request,**kwargs):
             return HttpResponseRedirect(reverse_lazy('assets:assets_list'))
 
 
+@login_required
 def AssetsZtree(request):
     """
     获取 区域 资产树 的相关数据
@@ -222,8 +226,7 @@ def AssetsZtree(request):
     return HttpResponse(json.dumps(data), content_type='application/json')
 
 
-
-
+@login_required
 def excel_export(request):
     '''文件导出'''
     import xlwt
@@ -362,6 +365,7 @@ def excel_export(request):
         return response
 
 
+@login_required
 def AssetsImport(request):
 
     """
@@ -455,17 +459,33 @@ def AssetsImport(request):
     return render(request, 'assets/assets-import.html', {'form': form, "assets_class": 'active'})
 
 
+@login_required
 def assets_count(request):
+    uactive = active.objects.all().order_by('id')
+    print(uactive)
+    uplatform_count_dict = {}
     if request.method == 'GET':
-        Uplatform = platform.objects.all()
-        print(Uplatform)
-        for i in Uplatform:
-            Uplatform_size = platform_size.objects.filter(platform=i)
-            print(Uplatform_size)
-            for x in Uplatform_size:
-                c = assets.objects.filter(utype=i, usize=x).count()
-                print({i: {x: c}})
-        return HttpResponse('200')
+        uplatform = platform.objects.all()
+        uplatform_dic = {}
+        for i in uplatform:
+            uplatform_count = assets.objects.filter(utype=i).count()
+            uplatform_count_dict[i] = uplatform_count
+            uplatform_size = platform_size.objects.filter(platform=i)
+            uplatform_size_list = []
+            for x in uplatform_size:
+                count_list = []
+                for active_id in uactive:
+                    c = assets.objects.filter(utype=i, usize=x, active=active_id).count()
+                    count_list.append(c)
+                total = assets.objects.filter(utype=i, usize=x).count()
+                count_list.append(total)
+                uplatform_size_list.append({x: count_list})
+            uplatform_dic[i] = uplatform_size_list
+
+        print(uplatform_dic, uplatform_count_dict)
+        return render(request, 'assets/assets-count.html',
+                      {'uplatform_dic': uplatform_dic, 'uplatform_count_dict': uplatform_count_dict,
+                       'assets_class': 'active'})
 
 
 

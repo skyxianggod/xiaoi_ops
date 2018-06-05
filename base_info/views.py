@@ -254,11 +254,10 @@ class ShopDel(LoginRequiredMixin, View):
 
 #设备类型视图
 #
-class PlatformList(ListView, LoginRequiredMixin):
+class PlatformList(LoginRequiredMixin, ListView):
     template_name = 'base_info/platform/platform.html'
     context_object_name = "dic_list"
     paginate_by = settings.DISPLAY_PER_PAGE
-
 
     def get_context_data(self, *, object_list=None, **kwargs):
 
