@@ -112,15 +112,15 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/2.0/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'zh-hans'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Shanghai'
 
 USE_I18N = True
 
 USE_L10N = False
 
-USE_TZ = False  # 如果只是内部使用的系统，这行建议为false，不然会有时区问题
+USE_TZ = True  # 如果只是内部使用的系统，这行建议为false，不然会有时区问题
 
 DATETIME_FORMAT = 'Y-m-d'
 DATE_FORMAT = 'Y-m-d'

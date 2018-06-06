@@ -203,7 +203,9 @@ def repair(request,**kwargs):
             return HttpResponse('请先归还资产')
         str1=str(pk)+'在'+time.strftime("%Y-%m-%d",time.localtime(time.time()))+'报修'+'  报修原因：'+str_id
         try:
-            tb_log.objects.create(uid_id=pk,log_info=str1)
+
+            user = request.user.username
+            tb_log.objects.create(uid_id=pk, log_info=str1, user=user)
         except BaseException :
                 return HttpResponse('数据录入成功，操作日志录入失败，请联系开发人员')
         else:
@@ -429,8 +431,9 @@ def AssetsImport(request):
                         except BaseException as e:
                             failed.append('%s: %s' % (col[0], str(e)))
                         updated.append('%s' % (col[0]))
+                        user = request.user.username
                         str1 = str(col[0]) + '在' + time.strftime("%Y-%m-%d", time.localtime(time.time())) + '导入更新成功'
-                        tb_log.objects.create(uid_id=col[0], log_info=str1)
+                        tb_log.objects.create(uid_id=col[0], log_info=str1, user=user)
 
                     else:
                         try:
@@ -440,7 +443,8 @@ def AssetsImport(request):
 
                         created.append('%s' % (col[0]))
                         str1 = str(col[0]) + '在' + time.strftime("%Y-%m-%d", time.localtime(time.time())) + '导入创建成功'
-                        tb_log.objects.create(uid_id=col[0], log_info=str1)
+                        user = request.user.username
+                        tb_log.objects.create(uid_id=col[0], log_info=str1, user=user)
 
             data = {
                 'created': created,

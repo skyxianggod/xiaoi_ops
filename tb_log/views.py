@@ -75,7 +75,8 @@ def logcreate(request,**kwargs):
 
     print(pk, str1)
     try:
-        models.tb_log.objects.create(uid_id=pk,log_info=str1)
+        user = request.user.username
+        models.tb_log.objects.create(uid_id=pk, log_info=str1, user=user)
     except BaseException :
             return HttpResponse('数据录入成功，操作日志录入失败，请联系开发人员')
     else:
