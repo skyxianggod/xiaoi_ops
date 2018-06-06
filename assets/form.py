@@ -1,16 +1,18 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-import re
 from django import forms
+
 from assets.models import *
-from base_info.models import platform,platform_size
+
+
 class AssetsForm(forms.ModelForm):
 
 
     class Meta:
         model = assets
         # fields = '__all__'
-        fields = ['uid', 'utype', 'usize', 'uconf', 'ctime', 'addr', 'ps', 'sn', 'pid', 'nmac', 'wmac',
+        fields = ['uid', 'utype', 'usize', 'ctime', 'addr', 'ps', 'sn', 'pid', 'nmac', 'wmac', 'upart', 'cpu', 'mem',
+                  'disk'
                   ]
 
 
@@ -18,9 +20,6 @@ class AssetsForm(forms.ModelForm):
             'ps': forms.Textarea(
                     attrs={'cols': 80, 'rows': 3}),
 
-
-            'uconf': forms.Textarea(
-                attrs={'cols': 80, 'rows': 3}),
             # 'utpye': forms.ModelChoiceField(
             #     attrs={'id': 'utype_id',}),
 
@@ -54,7 +53,7 @@ class AssetsForm_give(forms.ModelForm):
     class Meta:
         model = assets
         # fields = '__all__'
-        fields = ['otime', 'user', 'active', 'gtime', 'addr', 'ps'
+        fields = ['otime', 'user', 'active', 'gtime', 'addr', 'ps', 'upart'
                   ]
 
 
@@ -80,8 +79,8 @@ class AssetsForm_in(forms.ModelForm):
     class Meta:
         model = assets
         # fields = '__all__'
-        fields = ['otime','user','active','gtime',
-        ]
+        fields = ['otime', 'user', 'active', 'gtime', 'upart'
+                  ]
 
 
         widgets = {

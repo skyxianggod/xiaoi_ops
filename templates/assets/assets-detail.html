@@ -79,6 +79,15 @@
                                             </td>
                                         </tr>
                                         <tr>
+                                            <td width="20%">设备编号:</td>
+                                            <td><b>{{ detail.pid }}</b></td>
+                                        </tr>
+                                        <tr>
+                                            <td width="20%">sn号:</td>
+                                            <td><b>{{ detail.sn }}</b></td>
+                                        </tr>
+
+                                        <tr>
                                             <td width="20%">设备类型:</td>
                                             <td><b>{{ detail.utype }}</b>
                                             </td>
@@ -91,21 +100,43 @@
 
 
                                         <tr>
-                                            <td width="20%">设备配置:</td>
-                                            <td><b>{{ detail.uconf }}</b></td>
+                                            <td width="20%">处理器:</td>
+                                            <td><b>{{ detail.cpu }}</b></td>
+                                        </tr>
+                                        <tr>
+                                            <td width="20%">内存:</td>
+                                            <td><b>{{ detail.mem }}</b></td>
+                                        </tr>
+                                        <tr>
+                                            <td width="20%">硬盘:</td>
+                                            <td><b>{{ detail.disk }}</b></td>
                                         </tr>
 
                                         <tr>
                                             <td width="20%">入库时间:</td>
                                             <td><b>{{ detail.ctime }}</b></td>
                                         </tr>
-                                       <tr>
+
+                                        <tr>
                                             <td width="20%">状态:</td>
                                             <td><b>{{ detail.active }}</b></td>
                                         </tr>
+
                                         <tr>
                                             <td width="20%">使用人:</td>
-                                            <td><b>{{ detail.user }}</b></td>
+                                            <td><b>{{ detail.user }}</b>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td width="20%">部门:</td>
+                                            <td><b>{{ detail.upart }}</b>
+                                            </td>
+                                        </tr>
+
+
+                                        <tr>
+                                            <td width="20%">存放地点:</td>
+                                            <td><b>{{ detail.addr }}</b></td>
                                         </tr>
 
                                         <tr>
@@ -117,18 +148,7 @@
                                             <td width="20%">归还时间:</td>
                                             <td><b>{{ detail.gtime }}</b></td>
                                         </tr>
-                                        <tr>
-                                            <td width="20%">sn号:</td>
-                                            <td><b>{{ detail.sn }}</b></td>
-                                        </tr>
-                                        <tr>
-                                            <td width="20%">设备编号:</td>
-                                            <td><b>{{ detail.pid }}</b></td>
-                                        </tr>
-                                        <tr>
-                                            <td width="20%">存放地点:</td>
-                                            <td><b>{{ detail.addr }}</b></td>
-                                        </tr>
+
                                         <tr>
                                             <td width="20%">有线mac:</td>
                                             <td><b>{{ detail.nmac }}</b></td>

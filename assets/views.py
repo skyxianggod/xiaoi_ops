@@ -174,12 +174,14 @@ class AssetsUpdatein(LoginRequiredMixin,UpdateView):
             self.success_url=reverse_lazy('tb_log:tb_log_create',kwargs={'pk':pk,'kw':'i','user':'c'})
 
         else:
-            a['active']=5
-            a['user']=''
-            a['otime']=''
-            self.success_url=reverse_lazy('tb_log:tb_log_create',kwargs={'pk':pk,'kw':'p','user':'c'})
+            if assets.objects.get(uid=pk).active_id == 1 or assets.objects.get(uid=pk).active_id == 5:
+                a['active'] = 5
+                a['user'] = ''
+                a['otime'] = ''
+                self.success_url = reverse_lazy('tb_log:tb_log_create', kwargs={'pk': pk, 'kw': 'p', 'user': 'c'})
 
-
+            else:
+                return HttpResponse('请先归还资产')
         self.request.POST=a
         return super().post(request, *args, **kwargs)
 
@@ -260,25 +262,32 @@ def excel_export(request):
             w.write(0, 12, header[12])
             w.write(0, 13, header[13])
             w.write(0, 14, header[14])
+            w.write(0, 15, header[15])
+            w.write(0, 16, header[16])
+            w.write(0, 17, header[17])
 
 
         excel_row = 1
         for obj in list_obj:
-            w.write(excel_row,0,obj.uid)
-            w.write(excel_row,1,obj.utype.name)
-            w.write(excel_row,2,obj.usize.name)
-            w.write(excel_row,3,obj.uconf)
-            w.write(excel_row, 4, obj.active.name)
-            w.write(excel_row, 5, obj.ctime, style)
-            w.write(excel_row,6,obj.user)
-            w.write(excel_row,7,obj.gtime,style)
-            w.write(excel_row,8,obj.otime,style)
-            w.write(excel_row, 9, obj.sn)
-            w.write(excel_row, 10, obj.addr)
-            w.write(excel_row, 11, obj.pid)
+            w.write(excel_row, 0, obj.active.name)
+            w.write(excel_row, 1, obj.uid)
+            w.write(excel_row, 2, obj.pid)
+            w.write(excel_row, 3, obj.utype.name)
+            w.write(excel_row, 4, obj.usize.name)
+            w.write(excel_row, 5, obj.user)
+            w.write(excel_row, 6, obj.upart)
+            w.write(excel_row, 7, obj.addr)
+            w.write(excel_row, 8, obj.cpu)
+            w.write(excel_row, 9, obj.mem)
+            w.write(excel_row, 10, obj.disk)
+            w.write(excel_row, 11, obj.sn)
             w.write(excel_row, 12, obj.nmac)
             w.write(excel_row, 13, obj.wmac)
-            w.write(excel_row, 14, obj.ps)
+            w.write(excel_row, 14, obj.ctime, style)
+            w.write(excel_row, 15, obj.gtime, style)
+            w.write(excel_row, 16, obj.otime, style)
+            w.write(excel_row, 17, obj.ps)
+
 
             excel_row +=1
 
@@ -336,24 +345,30 @@ def excel_export(request):
         w.write(0, 12, header[12])
         w.write(0, 13, header[13])
         w.write(0, 14, header[14])
+        w.write(0, 15, header[15])
+        w.write(0, 16, header[16])
+        w.write(0, 17, header[17])
         if qs:
             excel_row = 1
             for obj in qs:
-                w.write(excel_row,0,obj.uid)
-                w.write(excel_row,1,obj.utype.name)
-                w.write(excel_row,2,obj.usize.name)
-                w.write(excel_row,3,obj.uconf)
-                w.write(excel_row, 4, obj.active.name)
-                w.write(excel_row, 5, obj.ctime, style)
-                w.write(excel_row,6,obj.user)
-                w.write(excel_row,7,obj.gtime,style)
-                w.write(excel_row,8,obj.otime,style)
-                w.write(excel_row, 9, obj.sn)
-                w.write(excel_row, 10, obj.addr)
-                w.write(excel_row, 11, obj.pid)
+                w.write(excel_row, 0, obj.active.name)
+                w.write(excel_row, 1, obj.uid)
+                w.write(excel_row, 2, obj.pid)
+                w.write(excel_row, 3, obj.utype.name)
+                w.write(excel_row, 4, obj.usize.name)
+                w.write(excel_row, 5, obj.user)
+                w.write(excel_row, 6, obj.upart)
+                w.write(excel_row, 7, obj.addr)
+                w.write(excel_row, 8, obj.cpu)
+                w.write(excel_row, 9, obj.mem)
+                w.write(excel_row, 10, obj.disk)
+                w.write(excel_row, 11, obj.sn)
                 w.write(excel_row, 12, obj.nmac)
                 w.write(excel_row, 13, obj.wmac)
-                w.write(excel_row, 14, obj.ps)
+                w.write(excel_row, 14, obj.ctime, style)
+                w.write(excel_row, 15, obj.gtime, style)
+                w.write(excel_row, 16, obj.otime, style)
+                w.write(excel_row, 17, obj.ps)
                 excel_row +=1
 
         sio = BytesIO()
@@ -404,13 +419,14 @@ def AssetsImport(request):
             row = table.nrows  # 数据的行数
             for i in range(1,row):
                 col = table.row_values(i)
+                print(col)
                 if set(col) == {''}:
                     continue
                 else:
                     try:
-                        col[1] = platform.objects.get(name=col[1])
-                        col[2] = platform_size.objects.get(name=col[2], platform=col[1])
-                        col[4] = active.objects.get(name=col[4])
+                        col[3] = platform.objects.get(name=col[3])  # 类型
+                        col[4] = platform_size.objects.get(name=col[4], platform=col[3])  # 型号
+                        col[0] = active.objects.get(name=col[0])  # 状态
                         for y in range(len(col)):
                             if table.cell(i, y).ctype == 3:
                                 date = datetime(*xldate_as_tuple(col[y], 0))
@@ -422,29 +438,29 @@ def AssetsImport(request):
                                 col[y] = int(col[y])
 
                         assets_au = dict(zip(mapping_reverse, col))
-                    except:
-                        return HttpResponse('导入文件格式错误')
+                    except BaseException as e:
+                        return HttpResponse('导入文件格式错误',e)
                     # print(assets_au)
-                    if assets.objects.filter(uid=col[0]):
+                    if assets.objects.filter(uid=col[1]):
                         try:
-                            assets.objects.filter(uid=col[0]).update(**assets_au)
+                            assets.objects.filter(uid=col[1]).update(**assets_au)
                         except BaseException as e:
-                            failed.append('%s: %s' % (col[0], str(e)))
-                        updated.append('%s' % (col[0]))
+                            failed.append('%s: %s' % (col[1], str(e)))
+                        updated.append('%s' % (col[1]))
                         user = request.user.username
-                        str1 = str(col[0]) + '在' + time.strftime("%Y-%m-%d", time.localtime(time.time())) + '导入更新成功'
-                        tb_log.objects.create(uid_id=col[0], log_info=str1, user=user)
+                        str1 = str(col[1]) + '在' + time.strftime("%Y-%m-%d", time.localtime(time.time())) + '导入更新成功'
+                        tb_log.objects.create(uid_id=col[1], log_info=str1, user=user)
 
                     else:
                         try:
                             assets.objects.create(**assets_au)
                         except BaseException:
-                            failed.append('%s: %s' % (col[0], str(e)))
+                            failed.append('%s: %s' % (col[1], str(e)))
 
-                        created.append('%s' % (col[0]))
-                        str1 = str(col[0]) + '在' + time.strftime("%Y-%m-%d", time.localtime(time.time())) + '导入创建成功'
+                        created.append('%s' % (col[1]))
+                        str1 = str(col[1]) + '在' + time.strftime("%Y-%m-%d", time.localtime(time.time())) + '导入创建成功'
                         user = request.user.username
-                        tb_log.objects.create(uid_id=col[0], log_info=str1, user=user)
+                        tb_log.objects.create(uid_id=col[1], log_info=str1, user=user)
 
             data = {
                 'created': created,
