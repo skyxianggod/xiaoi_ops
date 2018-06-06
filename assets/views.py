@@ -502,7 +502,7 @@ def assets_count(request):
                 uplatform_size_list.append({x: count_list})
             uplatform_dic[i] = uplatform_size_list
 
-        print(uplatform_dic, uplatform_count_dict)
+        # print(uplatform_dic, uplatform_count_dict)
         return render(request, 'assets/assets-count.html',
                       {'uplatform_dic': uplatform_dic, 'uplatform_count_dict': uplatform_count_dict,
                        'assets_class': 'active'})
