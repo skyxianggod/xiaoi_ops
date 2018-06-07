@@ -442,9 +442,9 @@ def AssetsImport(request):
                                 col[y] = int(col[y])
 
                         assets_au = dict(zip(mapping_reverse, col))
-                    except BaseException as e:
-                        print(e)
-                        return HttpResponse('导入文件格式错误')
+                    except BaseException:
+                        failed.append('%s' % (col[1]))
+                        continue
                     # print(assets_au)
                     if assets.objects.filter(uid=col[1]):
                         try:
@@ -460,7 +460,7 @@ def AssetsImport(request):
                         try:
                             assets.objects.create(**assets_au)
                         except BaseException:
-                            failed.append('%s: %s' % (col[1], str(e)))
+                            failed.append('%s' % (col[1]))
 
                         created.append('%s' % (col[1]))
                         str1 = str(col[1]) + '在' + time.strftime("%Y-%m-%d", time.localtime(time.time())) + '导入创建成功'
