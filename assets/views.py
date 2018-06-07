@@ -305,25 +305,28 @@ def excel_export(request):
 
     if request.method == 'POST':
         ids = request.POST.getlist('id', None)
+        print(ids)
 
         idstring = ''
+        qs = None
         #####################################
-        # '''使用weherw时字符串必须采用引号'''
-        if ids:
+        # '''使用wehere时字符串必须采用引号'''
+        if ids is not None:
             for i in ids:
                 if i.isdigit():
                     idstring = idstring + str(i)+','
                 else:
                     idstring = idstring+'\''+ str(i) +'\''+','
-        idstring_new=idstring[0:-2]
+            print(idstring)
+            idstring_new = idstring[0:-1]
+            print(idstring_new)
         #######################################
         # idstring = ','.join(ids)
-        qs = assets.objects.extra(where=['uid IN (' + idstring_new + ')']).all().order_by('utype_id','active_id')
-        # print(qs)
+            qs = assets.objects.extra(where=['uid IN (' + idstring_new + ')']).all().order_by('utype_id', 'active_id')
+            print(qs)
         # print('uid IN (' + idstring + ')')
         style = xlwt.XFStyle()
         style.num_format_str='M/D/YY'
-
         ws = xlwt.Workbook(encoding='utf-8')
         w = ws.add_sheet(u'第一页数据')
         fields = [field for field in assets._meta.fields]
@@ -349,7 +352,7 @@ def excel_export(request):
         w.write(0, 15, header[15])
         w.write(0, 16, header[16])
         w.write(0, 17, header[17])
-        if qs:
+        if qs is not None:
             excel_row = 1
             for obj in qs:
                 w.write(excel_row, 0, obj.active.name)

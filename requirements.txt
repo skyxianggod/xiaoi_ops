@@ -1,0 +1,5 @@
+django
+django-bootstrap3
+chardet
+xlwt
+xlrd
