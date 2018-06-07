@@ -45,7 +45,7 @@
                     <a href="{% url "index" %}">主页</a>
                 </li>
                 <li>
-                    <a>资产管理</a>
+                    <a href="assets.html">资产管理</a>
                 </li>
                 <li class="active">
                     <strong>资产信息</strong>
@@ -107,7 +107,7 @@
                             <form id="cha" class="form-horizontal" action="{% url 'assets:assets_list' %}" method="GET">
                                 {% csrf_token %}
                                 <div class="col-md-2"><input type="text" class="form-control" name="name"
-                                                             placeholder="使用人 资产编号" ></div>
+                                                             placeholder="使用人 资产编号 设备编号"></div>
 
                                 <button class="btn btn-sm btn-primary" type="submit">查询</button>
 

@@ -17,7 +17,7 @@ class LogView(LoginRequiredMixin, ListView):
     model = models.tb_log
     context_object_name = 'log_list'
     paginate_by = settings.DISPLAY_PER_PAGE
-    ordering = ("id")
+    ordering = ("-id")
     def get_queryset(self):
 
         if self.request.GET.get('name'):

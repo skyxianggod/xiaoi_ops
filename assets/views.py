@@ -52,11 +52,12 @@ class AssetsList(LoginRequiredMixin,ListView):
             query = self.request.GET.get('name', None)
             # print(query)
             try:
-                queryset =super().get_queryset().filter(Q(user=query)|Q(uid=query)|Q(active_id=query)).order_by('active_id')
+                queryset = super().get_queryset().filter(
+                    Q(user=query) | Q(uid=query) | Q(active_id=query) | Q(pid=query)).order_by('pid')
                 # print('......')
             except BaseException as e:
                 # print(e)
-                queryset =super().get_queryset().filter(Q(user=query)|Q(uid=query)).order_by('active_id')
+                queryset = super().get_queryset().filter(Q(user=query) | Q(uid=query) | Q(pid=query)).order_by('pid')
         else:
             queryset = super().get_queryset()
         return queryset
@@ -425,7 +426,7 @@ def AssetsImport(request):
                 else:
                     try:
                         col[3] = platform.objects.get(name=col[3])  # 类型
-                        col[4] = platform_size.objects.get(name=col[4], platform=col[3])  # 型号
+                        col[4] = platform_size.objects.get(name=col[4].strip(), platform=col[3])  # 型号
                         col[0] = active.objects.get(name=col[0])  # 状态
                         for y in range(len(col)):
                             if table.cell(i, y).ctype == 3:
@@ -439,7 +440,8 @@ def AssetsImport(request):
 
                         assets_au = dict(zip(mapping_reverse, col))
                     except BaseException as e:
-                        return HttpResponse('导入文件格式错误',e)
+                        print(e)
+                        return HttpResponse('导入文件格式错误')
                     # print(assets_au)
                     if assets.objects.filter(uid=col[1]):
                         try:
