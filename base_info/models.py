@@ -54,7 +54,7 @@ class platform(models.Model):
 class platform_size(models.Model):
 
     name = models.CharField(max_length=24,verbose_name='设备型号')
-    platform = models.ForeignKey(verbose_name="设备型号",to=platform,to_field='id',on_delete=models.CASCADE)
+    platform = models.ForeignKey(verbose_name="设备类型", to=platform, to_field='id', on_delete=models.CASCADE)
     class Meta:
         db_table = "platform_size"
         verbose_name = "设备型号"
@@ -62,15 +62,11 @@ class platform_size(models.Model):
     def __str__(self):
         return self.name
 
-
-
-class platform_asstes(models.Model):
-
-    name = models.CharField(max_length=24,verbose_name='设备配置')
-    platform_size = models.ForeignKey(verbose_name="设备型号",to=platform_size,to_field='id',on_delete=models.CASCADE)
-    class Meta:
-        db_table = "platform_asstes"
-        verbose_name = "设备配置"
-        verbose_name_plural = '设备配置'
-
-
+# class platform_asstes(models.Model):
+#
+#     name = models.CharField(max_length=24,verbose_name='设备配置')
+#     platform_size = models.ForeignKey(verbose_name="设备型号",to=platform_size,to_field='id',on_delete=models.CASCADE)
+#     class Meta:
+#         db_table = "platform_asstes"
+#         verbose_name = "设备配置"
+#         verbose_name_plural = '设备配置'
