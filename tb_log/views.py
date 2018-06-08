@@ -30,6 +30,16 @@ class LogView(LoginRequiredMixin, ListView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
 
+        # 高级分页
+        context = super().get_context_data(**kwargs)
+        paginator = context.get('paginator')
+
+        page = context.get('page_obj')
+        is_paginated = context.get('is_paginated')
+        pagination_data = self.pagination_data(paginator, page, is_paginated)
+        # print(pagination_data)
+        # print(is_paginated,paginator,page)
+        ########
         search_data = self.request.GET.copy()
         print(search_data)
         try:
@@ -44,9 +54,82 @@ class LogView(LoginRequiredMixin, ListView):
         context = {
             "search_data": search_data.urlencode(),
             "assets_class": 'active',
+            # "pagination_data":pagination_data,
         }
+        context.update(pagination_data)
         kwargs.update(context)
         return super().get_context_data(**kwargs)
+
+    def pagination_data(self, paginator, page, is_paginated):
+
+        if not is_paginated:
+            return {}
+
+        left = []
+        right = []
+
+        left_has_more = False
+        right_has_more = False
+
+        first = False
+        last = False
+        # 当前页码
+        page_number = page.number
+        # 总页数
+        total_pages = paginator.num_pages
+        # 页码列表
+        page_range = paginator.page_range
+
+        if page_number == 1:
+            right = page_range[page_number:page_number + 3]
+
+            if right[-1] < total_pages - 1:
+                right_has_more = True
+
+            if right[-1] < total_pages:
+                last = True
+
+        elif page_number == total_pages:
+            left = page_range[(page_number - 4) if (page_number - 4) > 0 else 0:page_number - 1]
+
+            if left[0] > 2:
+                left_has_more = True
+
+            if left[0] > 1:
+                first = True
+
+        else:
+
+            left = page_range[(page_number - 4) if (page_number - 4) > 0 else 0:page_number - 1]
+            right = page_range[page_number:page_number + 3]
+
+            if right[-1] < total_pages - 1:
+                right_has_more = True
+
+            if right[-1] < total_pages:
+                last = True
+
+            if left[0] > 2:
+                left_has_more = True
+
+            if left[0] > 1:
+                first = True
+
+        data = {
+            'left': left,
+            'right': right,
+            'left_has_more': left_has_more,
+            'right_has_more': right_has_more,
+            'first': first,
+            'last': last,
+        }
+
+        return data
+
+
+
+
+
 
 def logcreate(request,**kwargs):
     if request.method == "GET":

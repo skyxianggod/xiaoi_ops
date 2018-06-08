@@ -29,6 +29,13 @@ class AssetsList(LoginRequiredMixin,ListView):
 
         search_data = self.request.GET.copy()
         # print(search_data)
+        # 高级分页
+        context = super().get_context_data(**kwargs)
+        paginator = context.get('paginator')
+
+        page = context.get('page_obj')
+        is_paginated = context.get('is_paginated')
+        pagination_data = self.pagination_data(paginator, page, is_paginated)
         try:
             search_data.pop("page")
 
@@ -43,6 +50,7 @@ class AssetsList(LoginRequiredMixin,ListView):
             "assets_class": 'active',
         }
         kwargs.update(context)
+        kwargs.update(pagination_data)
         return super().get_context_data(**kwargs)
 
 
@@ -63,6 +71,71 @@ class AssetsList(LoginRequiredMixin,ListView):
         return queryset
 
 
+    def pagination_data(self, paginator, page, is_paginated):
+
+        if not is_paginated:
+            return {}
+
+        left = []
+        right = []
+
+        left_has_more = False
+        right_has_more = False
+
+        first = False
+        last = False
+        # 当前页码
+        page_number = page.number
+        # 总页数
+        total_pages = paginator.num_pages
+        # 页码列表
+        page_range = paginator.page_range
+
+        if page_number == 1:
+            right = page_range[page_number:page_number + 3]
+
+            if right[-1] < total_pages - 1:
+                right_has_more = True
+
+            if right[-1] < total_pages:
+                last = True
+
+        elif page_number == total_pages:
+            left = page_range[(page_number - 4) if (page_number - 4) > 0 else 0:page_number - 1]
+
+            if left[0] > 2:
+                left_has_more = True
+
+            if left[0] > 1:
+                first = True
+
+        else:
+
+            left = page_range[(page_number - 4) if (page_number - 4) > 0 else 0:page_number - 1]
+            right = page_range[page_number:page_number + 3]
+
+            if right[-1] < total_pages - 1:
+                right_has_more = True
+
+            if right[-1] < total_pages:
+                last = True
+
+            if left[0] > 2:
+                left_has_more = True
+
+            if left[0] > 1:
+                first = True
+
+        data = {
+            'left': left,
+            'right': right,
+            'left_has_more': left_has_more,
+            'right_has_more': right_has_more,
+            'first': first,
+            'last': last,
+        }
+
+        return data
 
 
 class AssetsAdd(LoginRequiredMixin, CreateView):
