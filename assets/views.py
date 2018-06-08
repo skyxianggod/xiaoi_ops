@@ -390,13 +390,14 @@ def excel_export(request):
                     idstring = idstring + str(i)+','
                 else:
                     idstring = idstring+'\''+ str(i) +'\''+','
-            print(idstring)
-            idstring_new = idstring[0:-1]
-            print(idstring_new)
+                print(idstring)
+                idstring_new = idstring[0:-1]
+                print(idstring_new)
         #######################################
         # idstring = ','.join(ids)
-            qs = assets.objects.extra(where=['uid IN (' + idstring_new + ')']).all().order_by('utype_id', 'active_id')
-            print(qs)
+                qs = assets.objects.extra(where=['uid IN (' + idstring_new + ')']).all().order_by('utype_id',
+                                                                                                  'active_id')
+                print(qs)
         # print('uid IN (' + idstring + ')')
         style = xlwt.XFStyle()
         style.num_format_str='M/D/YY'

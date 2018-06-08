@@ -27,13 +27,13 @@ class assets(models.Model):
     cpu = models.CharField(max_length=64, verbose_name='CPU', null=True, blank=True)
     mem = models.CharField(max_length=64, verbose_name='内存', null=True, blank=True)
     disk = models.CharField(max_length=256, verbose_name="硬盘", null=True, blank=True)
-    sn = models.CharField(verbose_name='SN号', max_length=24, null=True, blank=True)
+    sn = models.CharField(verbose_name='SN号', max_length=128, null=True, blank=True)
     nmac = models.CharField(verbose_name='有线mac', max_length=24, null=True, blank=True)
     wmac = models.CharField(verbose_name='无线mac', max_length=24, null=True, blank=True)
     ctime = models.DateField(verbose_name='入库时间')
     otime = models.DateField(verbose_name='领（借）用时间', null=True, blank=True)
     gtime = models.DateField(verbose_name='归还(报废)时间', null=True, blank=True)
-    ps = models.CharField(verbose_name='备注', max_length=24, null=True, blank=True)
+    ps = models.CharField(verbose_name='备注', max_length=128, null=True, blank=True)
 
 
 
