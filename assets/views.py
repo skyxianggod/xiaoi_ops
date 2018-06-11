@@ -61,11 +61,13 @@ class AssetsList(LoginRequiredMixin,ListView):
             # print(query)
             try:
                 queryset = super().get_queryset().filter(
-                    Q(user=query) | Q(uid=query) | Q(active_id=query) | Q(pid=query)).order_by('pid')
+                        Q(user__icontains=query) | Q(uid__icontains=query) | Q(active_id__icontains=query) | Q(
+                            pid__icontains=query)).order_by('pid')
                 # print('......')
             except BaseException as e:
                 # print(e)
-                queryset = super().get_queryset().filter(Q(user=query) | Q(uid=query) | Q(pid=query)).order_by('pid')
+                queryset = super().get_queryset().filter(
+                    Q(user__icontains=query) | Q(uid__icontains=query) | Q(pid__icontains=query)).order_by('pid')
         else:
             queryset = super().get_queryset()
         return queryset
