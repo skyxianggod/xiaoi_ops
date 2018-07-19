@@ -1,11 +1,7 @@
-from django.test import TestCase
-
 # Create your tests here.
 # import re
 # a='/asstes/assets-add-update-g-12343.html'
 # print(re.search('-g-', a))
-from base_info.models import *
-from assets.models import *
 a=['2007', '笔记本', 'E450', '', 43246.0, '在库', '', '', '']
 b=['2016ap', '笔记本', 'E470', '234324', 43244.0, '在库', '', '', '']
 c=['2016apm', '笔记本', 'E450', 'dddd', 43250.0, '在库', '', '', '']

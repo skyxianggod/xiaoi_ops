@@ -72,6 +72,17 @@
                 </ul>
             </li>
 
+            <li class="{{ cmdb_class }}">
+                <a href="#"><i class="fa fa-inbox"></i> <span class="nav-label">工作日志</span>
+                    <span class="fa arrow"> </span></a>
+                <ul class="nav nav-second-level">
+                    <li><a href="{% url "cmdb:cmdb_list" %}">日常记录</a></li>
+                    <li><a href="{% url "cmdb:cmdb_import" %}"></a></li>
+
+
+                </ul>
+            </li>
+
 
             {#            <li>#}
             {#                <a href="#"><i class="fa fa-inbox"></i> <span class="nav-label">管理</span>#}

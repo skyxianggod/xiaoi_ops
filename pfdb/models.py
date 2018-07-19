@@ -6,6 +6,7 @@ class pfdb(models.Model):
     id = models.AutoField(primary_key=True,verbose_name="id")
     platfrom_name = models.CharField(max_length=64,verbose_name="平台名称")
     platfrom_url = models.URLField(max_length=128,verbose_name="平台地址")
+    platfrom_ps = models.CharField(max_length=128, verbose_name="备注")
 
     class Meta:
         db_table ="pfdb"

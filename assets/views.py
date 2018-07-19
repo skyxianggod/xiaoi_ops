@@ -17,6 +17,7 @@ from tb_log.models import tb_log
 from cmdb.form import FileForm
 from django.contrib.auth.decorators import login_required
 
+
 class AssetsList(LoginRequiredMixin,ListView):
     template_name = 'assets/assets.html'
     model = assets
@@ -153,6 +154,7 @@ class AssetsAdd(LoginRequiredMixin, CreateView):
         # print(pk)
         self.success_url=reverse_lazy('tb_log:tb_log_create',kwargs={'pk':pk,'kw':'c','user':'c'})
         return super().post(request, *args, **kwargs)
+
 
 class AssetsUpdateDtail(LoginRequiredMixin, UpdateView):
     model = assets
