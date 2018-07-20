@@ -12,3 +12,7 @@ class PfdbFrom(forms.ModelForm):
         labels = {
             "platfrom_name": "平台名称",
         }
+
+        widgets = {
+            'platfrom_ps': forms.Textarea(
+                attrs={'cols': 80, 'rows': 3}),}
