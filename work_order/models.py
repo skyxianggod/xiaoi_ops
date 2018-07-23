@@ -4,14 +4,14 @@ from django.db import models
 class order(models.Model):
 
     STAUTS_CHOICES=(
-        ("",'待处理'),
-        ('','已完成'),
+        ("待处理",'待处理'),
+        ('已完成','已完成'),
     )
 
     event_name = models.CharField(max_length=64,verbose_name='事件名称')
     event_ps = models.CharField(max_length=128,verbose_name='事件描述')
     person = models.CharField(max_length=14,verbose_name='处理人')
-    event_starttime = models.DateField(verbose_name='时间开始时间')
+    event_starttime = models.DateField(verbose_name='事件开始时间')
     event_endtime = models.DateField(verbose_name='计划完成时间')
     event_status = models.CharField(verbose_name='时间状态',choices=STAUTS_CHOICES,max_length=24)
 

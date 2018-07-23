@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     "base_info",
     "assets",
     "tb_log",
+    'work_order',
 ]
 
 MIDDLEWARE = [

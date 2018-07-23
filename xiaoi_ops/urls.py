@@ -30,4 +30,5 @@ urlpatterns = [
     path('base_info/', include('base_info.urls', namespace="base_info")),
     path('assets/', include('assets.urls', namespace="assets")),
     path('tb_log/',include('tb_log.urls',namespace="tb_log")),
+    path('workorder/',include('work_order.urls',namespace="order")),
 ]

@@ -2,13 +2,15 @@
 # Create your views here.
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
-from django.views.generic import ListView
+from django.urls import reverse_lazy
+from django.views.generic import ListView,CreateView
 
 from xiaoi_ops import settings
+from .form import OrderForm
 from .models import *
 
 
-class AssetsList(LoginRequiredMixin,ListView):
+class OrderList(LoginRequiredMixin,ListView):
     template_name = 'work_order/order.html'
     model = order
     context_object_name = 'order_list'
@@ -129,3 +131,12 @@ class AssetsList(LoginRequiredMixin,ListView):
         }
 
         return data
+
+
+class OrderCreate(LoginRequiredMixin, CreateView):
+    """增加"""
+    model = order
+    form_class = OrderForm
+    template_name = 'work_order/order-add-update.html'
+    success_url = reverse_lazy('order:order_list')
+
