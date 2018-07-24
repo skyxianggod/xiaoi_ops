@@ -3,10 +3,10 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
 from django.urls import reverse_lazy
-from django.views.generic import ListView,CreateView
+from django.views.generic import ListView,CreateView,UpdateView
 
 from xiaoi_ops import settings
-from .form import OrderForm
+from .form import *
 from .models import *
 
 
@@ -50,17 +50,21 @@ class OrderList(LoginRequiredMixin,ListView):
 
     def get_queryset(self):
         if self.request.GET.get('name'):
-            query = self.request.GET.get('name', None)
+            print(self.request.GET)
+            query_name = self.request.GET.get('name', None)
+            query_status = self.request.GET.get('status', None)
+            query_stime = self.request.GET.get('stime', None)
+            query_etime = self.request.GET.get('etime', None)
             # print(query)
             try:
                 queryset = super().get_queryset().filter(
-                        Q(user__icontains=query) | Q(uid__icontains=query) | Q(active_id__icontains=query) | Q(
-                            pid__icontains=query)).order_by('pid')
+                    Q(event_name__icontains=query_name)  | Q(person=query_name) &
+                    Q(event_status=query_status) & Q(end_time__gt=query_stime) &
+                    Q(end_time__lt=query_etime)).order_by('-id')
                 # print('......')
             except BaseException as e:
                 # print(e)
-                queryset = super().get_queryset().filter(
-                    Q(user__icontains=query) | Q(uid__icontains=query) | Q(pid__icontains=query)).order_by('pid')
+                pass
         else:
             queryset = super().get_queryset()
         return queryset
@@ -139,4 +143,13 @@ class OrderCreate(LoginRequiredMixin, CreateView):
     form_class = OrderForm
     template_name = 'work_order/order-add-update.html'
     success_url = reverse_lazy('order:order_list')
+
+
+class OrderUpdate(LoginRequiredMixin, UpdateView):
+    model = order
+    form_class =  Order2Form
+    template_name = 'work_order/order-add-update.html'
+    # context_object_name = 'obj'
+    success_url = reverse_lazy('order:order_list')
+
 

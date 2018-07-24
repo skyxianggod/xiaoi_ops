@@ -189,6 +189,7 @@
       <column name="person" sqlType="VARCHAR(14)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
       <column name="event_starttime" sqlType="DATE" precision="0" scale="-1" nullable="false" jdbcType="12"/>
       <column name="event_endtime" sqlType="DATE" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="event_progress" sqlType="VARCHAR(24)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
       <column name="event_status" sqlType="VARCHAR(24)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
       <primary-key columns="id"/>
     </table>

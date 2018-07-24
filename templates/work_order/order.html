@@ -69,7 +69,7 @@
                         <div class="table-responsive">
 
                             <div  class="form-horizontal ">
-                            <form id="cha" class="form-horizontal " action="{% url 'tb_log:tb_log_list' %}" method="GET">
+                            <form id="cha" class="form-horizontal " action="{% url 'order:order_list' %}" method="GET">
                                 {% csrf_token %}
                                 <div class="col-md-2 ">
                                     <input type="text" class="form-control" name="name" placeholder="处理人" >
@@ -89,7 +89,7 @@
 
 <div class="col-md-4">
 <div class="input-group input-inline-sm col-sm-12" >
-<span class="input-group-addon">申请时间</span>
+<span class="input-group-addon">时间段</span>
 <input type="date" class="form-control" name="stime" >
 <span class="input-group-addon">至</span>
 <input type="date" class="form-control"  name="etime"></div></div>
@@ -106,17 +106,17 @@
 
 
 
-                                <table class="table table-striped table-bordered table-hover dataTables-cmdb">
+                                <table class="table table-striped table-bordered table-hover">
                                     <thead>
                                     <tr>
-
-                                        <th>事件名称</th>
-                                        <th>事件描述</th>
-                                        <th>处理人</th>
-                                        <th>开始时间</th>
-                                        <th>计划完成时间</th>
-                                        <th>状态</th>
-                                        <th>操作</th>
+                                        <th style="text-align:center" width="8%"  >新建时间</th>
+                                        <th style="text-align:center" width="10%" >事件名称</th>
+                                        <th style="text-align:center" width="50%" >事件描述</th>
+                                        <th style="text-align:center" width="5%"  >处理人</th>
+                                        <th style="text-align:center" width="7%"  >计划完成时间</th>
+                                        <th style="text-align:center" width="5%"  >状态</th>
+                                        <th style="text-align:center" width="5%"  >进度</th>
+                                        <th style="text-align:center" width="%5" >操作</th>
 
 
                                     </tr>
@@ -126,17 +126,14 @@
                                     {% for   row   in   order_list %}
 
                                         <tr class="gradeA">
-
-                                            <td class="center">{{ row.event_name }}</td>
-                                            <td class="center">{{ row.event_ps }}</td>
-                                            <td class="center">{{ row.person }}</td>
-                                            <td class="center">{{ row.event_starttime }}</td>
-                                            <td class="center">{{ row.event_endtime }}</td>
-                                            <td class="center">{{ row.event_status}}</td>
-                                            <td class="center"> <a class="btn btn-warning  btn-xs "href="#">编辑</a>
-                                                <a class="btn  btn-danger btn-xs "
-                                                   href="#">删除</a></td>
-
+                                            <td style="text-align:center">{{ row.event_starttime }}</td>
+                                            <td style="text-align:center">{{ row.event_name }}</td>
+                                            <td style="text-align:center">{{ row.event_ps }}</td>
+                                            <td style="text-align:center">{{ row.person }}</td>
+                                            <td style="text-align:center">{{ row.event_endtime }}</td>
+                                            <td style="text-align:center">{{ row.event_status}}</td>
+                                            <td style="text-align:center">{{ row.event_progress}}</td>
+                                            <td style="text-align:center"> <a class="btn btn-warning  btn-xs "href="{% url "order:order_updata" row.id %}">编辑</a>
                                         </tr>
                                     {% endfor %}
                                     </tbody>
@@ -147,10 +144,10 @@
 
 
                                     <ul class="pagination ">
-                                        <li><a href="{% url "tb_log:tb_log_list" %}?page=1">首页 </a></li>
+                                        <li><a href="{% url "order:order_list" %}?page=1">首页 </a></li>
                                         {% if  page_obj.has_previous %}
                                             <li>
-                                                <a href="{% url "tb_log:tb_log_list" %}?page={{ page_obj.previous_page_number }}&{{ search_data }}">
+                                                <a href="{% url "order:order_list" %}?page={{ page_obj.previous_page_number }}&{{ search_data }}">
                                                     上一页 </a></li>
                                         {% else %}
                                             <li class="disabled"><a> 上一页 </a></li>
@@ -160,11 +157,11 @@
                                             {% if  search_data %}  <!-- 判断是否是搜索分页-->
                                                 {#                                                {% if p == page_obj.number %}#}
                                                 {#                                                    <li class="active"><a#}
-                                                {#                                                            href="{% url "tb_log:tb_log_list" %}?page={{ p }}&{{ search_data }}"> {{ p }} </a>#}
+                                                {#                                                            href="{% url "order:order_list" %}?page={{ p }}&{{ search_data }}"> {{ p }} </a>#}
                                                 {#                                                    </li>#}
                                                 {#                                                {% else %}#}
                                                 {#                                                    <li>#}
-                                                {#                                                        <a href="{% url "tb_log:tb_log_list" %}?page={{ p }}&{{ search_data }}"> {{ p }} </a>#}
+                                                {#                                                        <a href="{% url "order:order_list" %}?page={{ p }}&{{ search_data }}"> {{ p }} </a>#}
                                                 {#                                                    </li>#}
                                                 {#                                                {% endif %}#}
 
@@ -174,19 +171,19 @@
                                                     {% endif %}
                                                     {% for i in left %}
                                                         <li>
-                                                            <a href="{% url "tb_log:tb_log_list" %}?page={{ i }}&{{ search_data }}">{{ i }}</a>
+                                                            <a href="{% url "order:order_list" %}?page={{ i }}&{{ search_data }}">{{ i }}</a>
                                                         </li>
                                                     {% endfor %}
                                                 {% endif %}
                                                 <li>
-                                                    <a href="{% url "tb_log:tb_log_list" %}?page={{ page_obj.number }}&{{ search_data }}"
+                                                    <a href="{% url "order:order_list" %}?page={{ page_obj.number }}&{{ search_data }}"
                                                        style="color: red">{{ page_obj.number }}</a>
                                                 </li>
 
                                                 {% if right %}
                                                     {% for i in right %}
                                                         <li>
-                                                            <a href="{% url "tb_log:tb_log_list" %}?page={{ i }}&{{ search_data }}">{{ i }}</a>
+                                                            <a href="{% url "order:order_list" %}?page={{ i }}&{{ search_data }}">{{ i }}</a>
                                                         </li>
                                                     {% endfor %}
                                                     {% if right_has_more %}
@@ -198,11 +195,11 @@
                                             {% else %}
                                                 {#                                                {% if p == page_obj.number %}#}
                                                 {#                                                    <li class="active"><a#}
-                                                {#                                                            href="{% url "tb_log:tb_log_list" %}?page={{ p }}"> {{ p }} </a>#}
+                                                {#                                                            href="{% url "order:order_list" %}?page={{ p }}"> {{ p }} </a>#}
                                                 {#                                                    </li>#}
                                                 {#                                                {% else %}#}
                                                 {#                                                    <li>#}
-                                                {#                                                        <a href="{% url "tb_log:tb_log_list" %}?page={{ p }}"> {{ p }} </a>#}
+                                                {#                                                        <a href="{% url "order:order_list" %}?page={{ p }}"> {{ p }} </a>#}
                                                 {#                                                    </li>#}
                                                 {#                                                {% endif %}#}
 
@@ -212,19 +209,19 @@
                                                     {% endif %}
                                                     {% for i in left %}
                                                         <li>
-                                                            <a href="{% url "tb_log:tb_log_list" %}?page={{ i }}">{{ i }}</a>
+                                                            <a href="{% url "order:order_list" %}?page={{ i }}">{{ i }}</a>
                                                         </li>
                                                     {% endfor %}
                                                 {% endif %}
                                                 <li>
-                                                    <a href="{% url "tb_log:tb_log_list" %}?page={{ page_obj.number }}"
+                                                    <a href="{% url "order:order_list" %}?page={{ page_obj.number }}"
                                                        style="color: red">{{ page_obj.number }}</a>
                                                 </li>
 
                                                 {% if right %}
                                                     {% for i in right %}
                                                         <li>
-                                                            <a href="{% url "tb_log:tb_log_list" %}?page={{ i }}">{{ i }}</a>
+                                                            <a href="{% url "order:order_list" %}?page={{ i }}">{{ i }}</a>
                                                         </li>
                                                     {% endfor %}
                                                     {% if right_has_more %}
@@ -237,11 +234,11 @@
 
                                         {% if  page_obj.has_next %}
                                             <li>
-                                                <a href="{% url "tb_log:tb_log_list" %}?page={{ page_obj.next_page_number }}&{{ search_data }}">
+                                                <a href="{% url "order:order_list" %}?page={{ page_obj.next_page_number }}&{{ search_data }}">
                                                     下一页 </a></li>
                                         {% endif %}
                                         <li>
-                                            <a href="{% url "tb_log:tb_log_list" %}?page={{ page_obj.paginator.num_pages }}&{{ search_data }}">尾页 </a>
+                                            <a href="{% url "order:order_list" %}?page={{ page_obj.paginator.num_pages }}&{{ search_data }}">尾页 </a>
                                         </li>
                                         <li><span
                                                 style="color: #0a0a0a">总: &nbsp;{{ page_obj.paginator.num_pages }} 页 </span>
@@ -270,7 +267,7 @@
 
 
     {% block footer-js %}
-        <script type="text/javascript" src="{% static 'js/plugins/ztree/jquery.ztree.all.min.js' %}"></script>
+        
         <script src="{% static 'js/jquery.form.min.js' %}"></script>
 
     {% endblock %}
