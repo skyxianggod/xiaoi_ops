@@ -72,11 +72,19 @@
                             <form id="cha" class="form-horizontal " action="{% url 'order:order_list' %}" method="GET">
                                 {% csrf_token %}
                                 <div class="col-md-2 ">
-                                    <input type="text" class="form-control" name="name" placeholder="处理人" >
+                                    <input type="text" class="form-control" name="name" placeholder="关键字" >
                                 </div>
 
                                 <div class="col-md-2 ">
-                                    <input type="text" class="form-control" name="status" placeholder="状态" >
+                                    <select name="status" class="form-control"  >
+  <option value="">请选择</option>
+
+  <option value="待处理">待处理</option>
+
+  <option value="已完成">已完成</option>
+
+</select>
+
                                 </div>
 {#                                <div class="col-md-2 ">#}
 {#                                    <input type="date" class="form-control" name="stime" >#}
@@ -90,14 +98,14 @@
 <div class="col-md-4">
 <div class="input-group input-inline-sm col-sm-12" >
 <span class="input-group-addon">时间段</span>
-<input type="date" class="form-control" name="stime" >
+<input id='starttiem' type="date" class="form-control" name="stime" >
 <span class="input-group-addon">至</span>
-<input type="date" class="form-control"  name="etime"></div></div>
+<input id='endtime' type="date" class="form-control"  name="etime"></div></div>
 
 
 
 
-<button class="btn btn-sm btn-primary" type="submit">查询</button>
+<button class="btn btn-sm btn-primary"  type="button" onclick="showTime()">查询</button>
                                 <a href="{% url  'order:order_add' %}" class=" btn btn-sm btn-primary ">
                                     新建</a>
 
@@ -269,6 +277,23 @@
     {% block footer-js %}
         
         <script src="{% static 'js/jquery.form.min.js' %}"></script>
+
+        <script type="text/javascript">
+        function showTime(){
+        var beginDate=$("#starttiem").val();
+        var endDate=$("#endtime").val();
+        var d1 = new Date(beginDate.replace(/\-/g, "\/"));
+        var d2 = new Date(endDate.replace(/\-/g, "\/"));
+
+
+          if(beginDate!=""&&endDate!=""&&d1 >=d2)
+            {
+                alert("开始时间不能大于结束时间！");
+                return false;
+        }
+            document.getElementById("cha").submit();
+        }
+        </script>
 
     {% endblock %}
 

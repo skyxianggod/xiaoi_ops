@@ -49,25 +49,49 @@ class OrderList(LoginRequiredMixin,ListView):
 
 
     def get_queryset(self):
-        if self.request.GET.get('name'):
-            print(self.request.GET)
-            query_name = self.request.GET.get('name', None)
-            query_status = self.request.GET.get('status', None)
-            query_stime = self.request.GET.get('stime', None)
-            query_etime = self.request.GET.get('etime', None)
-            # print(query)
-            try:
-                queryset = super().get_queryset().filter(
-                    Q(event_name__icontains=query_name)  | Q(person=query_name) &
-                    Q(event_status=query_status) & Q(end_time__gt=query_stime) &
-                    Q(end_time__lt=query_etime)).order_by('-id')
-                # print('......')
-            except BaseException as e:
-                # print(e)
-                pass
+
+        if self.request.GET.get('name') or self.request.GET.get('status') or self.request.GET.get('stime') or self.request.GET.get('etime'):
+            data = {}
+            query_name = self.request.GET.get('name')
+            query_status = self.request.GET.get('status')
+            query_stime = self.request.GET.get('stime')
+            query_etime = self.request.GET.get('etime')
+            print(query_name,query_status,query_etime,query_stime)
+            if query_status != '':
+                data = {'event_status':query_status}
+            queryset = super().get_queryset().filter(**data)
+            if query_name != '' :
+                queryset = queryset.filter(Q(event_name__icontains=query_name) | Q(person=query_name))
+                if query_stime != '':
+                    queryset = queryset.filter(Q(event_updatetime__gte=query_stime))
+                elif query_etime != '':
+                    queryset = queryset.filter(Q(event_updatetime__lte=query_etime))
+
+            elif query_stime != '':
+                queryset = queryset.filter(Q(event_updatetime__gte=query_stime))
+                if query_etime != '':
+                    queryset = queryset.filter(Q(event_updatetime__lte=query_etime))
+            elif query_etime != '':
+                queryset = queryset.filter(Q(event_updatetime__lte=query_etime))
+
+
+        # if query_name:
+        #     query_stime = self.request.GET.get('stime', None)
+        #     query_etime = self.request.GET.get('etime', None)
+        #     print(self.request.GET)
+        #     # print(query)
+        #     try:
+        #         queryset = super().get_queryset().filter(
+        #             Q(event_name__icontains=query_name)  | Q(person=query_name) &
+        #             Q(event_status=query_status) & Q(end_time__gte=query_stime) &
+        #             Q(end_time__lte=query_etime)).order_by('-id')
+        #         # print('......')
+        #     except BaseException as e:
+        #         # print(e)
+        #         pass
         else:
             queryset = super().get_queryset()
-        return queryset
+        return queryset.order_by('person')
 
 
     def pagination_data(self, paginator, page, is_paginated):

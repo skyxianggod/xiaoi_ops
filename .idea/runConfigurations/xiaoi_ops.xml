@@ -13,8 +13,8 @@
     <option name="ADD_SOURCE_ROOTS" value="true" />
     <module name="xiaoi_ops" />
     <option name="launchJavascriptDebuger" value="false" />
-    <option name="port" value="8000" />
-    <option name="host" value="" />
+    <option name="port" value="80" />
+    <option name="host" value="172.16.23.36" />
     <option name="additionalOptions" value="" />
     <option name="browserUrl" value="" />
     <option name="runTestServer" value="false" />
