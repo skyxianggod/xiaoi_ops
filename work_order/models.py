@@ -9,7 +9,7 @@ class order(models.Model):
     )
 
     event_name = models.CharField(max_length=64,verbose_name='事件名称')
-    event_ps = models.CharField(max_length=128,verbose_name='事件描述')
+    event_ps = models.CharField(max_length=4000,verbose_name='事件描述')
     person = models.CharField(max_length=14,verbose_name='处理人')
     event_starttime = models.DateField(verbose_name='事件创建时间',auto_now_add=True)
     event_updatetime = models.DateField(verbose_name='事件创建时间',auto_now=True)
